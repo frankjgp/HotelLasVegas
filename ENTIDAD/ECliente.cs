@@ -15,5 +15,6 @@ namespace ENTIDAD
         public string NUM_DOCUMENTO { get; set; }
         public string TELEFONOS { get; set; }
         public string DESCRIPCION { get; set; }
+        public int OPCION { get; set; }
     }
 }
