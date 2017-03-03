@@ -1,0 +1,311 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E6C2E090-4856-47B6-8881-E07B82B45760}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PRESENTACION</RootNamespace>
+    <AssemblyName>PRESENTACION</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\advanced-datatable\examples\examples_support\vssver2.scc" />
+    <Content Include="assets\advanced-datatable\media\css\vssver2.scc" />
+    <Content Include="assets\advanced-datatable\media\images\vssver2.scc" />
+    <Content Include="assets\advanced-datatable\media\js\vssver2.scc" />
+    <Content Include="assets\advanced-datatable\tabletools\as3\lib\AlivePDF.swc" />
+    <Content Include="assets\advanced-datatable\tabletools\as3\lib\vssver2.scc" />
+    <Content Include="assets\advanced-datatable\tabletools\as3\vssver2.scc" />
+    <Content Include="assets\advanced-datatable\tabletools\as3\ZeroClipboard.as" />
+    <Content Include="assets\advanced-datatable\tabletools\as3\ZeroClipboardPdf.as" />
+    <Content Include="assets\advanced-datatable\tabletools\css\vssver2.scc" />
+    <Content Include="assets\advanced-datatable\tabletools\images\psd\collection.psd" />
+    <Content Include="assets\advanced-datatable\tabletools\images\psd\copy document.psd" />
+    <Content Include="assets\advanced-datatable\tabletools\images\psd\file_types.psd" />
+    <Content Include="assets\advanced-datatable\tabletools\images\psd\printer.psd" />
+    <Content Include="assets\advanced-datatable\tabletools\images\psd\vssver2.scc" />
+    <Content Include="assets\advanced-datatable\tabletools\images\vssver2.scc" />
+    <Content Include="assets\advanced-datatable\tabletools\js\vssver2.scc" />
+    <Content Include="assets\advanced-datatable\tabletools\swf\vssver2.scc" />
+    <Content Include="assets\bootstrap-datepicker\css\vssver2.scc" />
+    <Content Include="assets\bootstrap-datepicker\js\vssver2.scc" />
+    <Content Include="assets\bootstrap-datetimepicker\css\vssver2.scc" />
+    <Content Include="assets\bootstrap-datetimepicker\js\vssver2.scc" />
+    <Content Include="assets\bootstrap-inputmask\vssver2.scc" />
+    <Content Include="assets\font-awesome\css\vssver2.scc" />
+    <Content Include="assets\font-awesome\font\fontawesome-webfontd41d.eot" />
+    <Content Include="assets\font-awesome\font\fontawesome-webfontf77b.eot" />
+    <Content Include="assets\font-awesome\font\fontawesome-webfontf77b.ttf" />
+    <Content Include="assets\font-awesome\font\fontawesome-webfontf77b.woff" />
+    <Content Include="assets\font-awesome\font\vssver2.scc" />
+    <Content Include="img\checkbox\Thumbs.db" />
+    <Content Include="img\icons\Thumbs.db" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\advanced-datatable\examples\examples_support\details_close.png" />
+    <Content Include="assets\advanced-datatable\examples\examples_support\details_open.png" />
+    <Content Include="assets\advanced-datatable\media\css\demo_page.css" />
+    <Content Include="assets\advanced-datatable\media\css\demo_table.css" />
+    <Content Include="assets\advanced-datatable\media\images\back_disabled.png" />
+    <Content Include="assets\advanced-datatable\media\images\back_enabled.png" />
+    <Content Include="assets\advanced-datatable\media\images\back_enabled_hover.png" />
+    <Content Include="assets\advanced-datatable\media\images\forward_disabled.png" />
+    <Content Include="assets\advanced-datatable\media\images\forward_enabled.png" />
+    <Content Include="assets\advanced-datatable\media\images\forward_enabled_hover.png" />
+    <Content Include="assets\advanced-datatable\media\images\sort_asc.png" />
+    <Content Include="assets\advanced-datatable\media\images\sort_asc_disabled.png" />
+    <Content Include="assets\advanced-datatable\media\images\sort_both.png" />
+    <Content Include="assets\advanced-datatable\media\images\sort_desc.png" />
+    <Content Include="assets\advanced-datatable\media\images\sort_desc_disabled.png" />
+    <Content Include="assets\advanced-datatable\media\js\FixedColumns.js" />
+    <Content Include="assets\advanced-datatable\media\js\jquery.dataTables.columnFilter.js" />
+    <Content Include="assets\advanced-datatable\media\js\jquery.dataTables.js" />
+    <Content Include="assets\advanced-datatable\media\js\jquery.js" />
+    <Content Include="assets\advanced-datatable\tabletools\css\TableTools.css" />
+    <Content Include="assets\advanced-datatable\tabletools\css\TableTools_JUI.css" />
+    <Content Include="assets\advanced-datatable\tabletools\images\background.png" />
+    <Content Include="assets\advanced-datatable\tabletools\images\collection.png" />
+    <Content Include="assets\advanced-datatable\tabletools\images\collection_hover.png" />
+    <Content Include="assets\advanced-datatable\tabletools\images\copy.png" />
+    <Content Include="assets\advanced-datatable\tabletools\images\copy_hover.png" />
+    <Content Include="assets\advanced-datatable\tabletools\images\csv.png" />
+    <Content Include="assets\advanced-datatable\tabletools\images\csv_hover.png" />
+    <Content Include="assets\advanced-datatable\tabletools\images\pdf.png" />
+    <Content Include="assets\advanced-datatable\tabletools\images\pdf_hover.png" />
+    <Content Include="assets\advanced-datatable\tabletools\images\print.png" />
+    <Content Include="assets\advanced-datatable\tabletools\images\print_hover.png" />
+    <Content Include="assets\advanced-datatable\tabletools\images\xls.png" />
+    <Content Include="assets\advanced-datatable\tabletools\images\xls_hover.png" />
+    <Content Include="assets\advanced-datatable\tabletools\js\TableTools.js" />
+    <Content Include="assets\advanced-datatable\tabletools\js\TableTools.min.js" />
+    <Content Include="assets\advanced-datatable\tabletools\js\ZeroClipboard.js" />
+    <Content Include="assets\advanced-datatable\tabletools\swf\copy_csv_xls.swf" />
+    <Content Include="assets\advanced-datatable\tabletools\swf\copy_csv_xls_pdf.swf" />
+    <Content Include="assets\bootstrap-datepicker\css\datepicker.css" />
+    <Content Include="assets\bootstrap-datepicker\js\bootstrap-datepicker.js" />
+    <Content Include="assets\bootstrap-datetimepicker\css\datetimepicker.css" />
+    <Content Include="assets\bootstrap-datetimepicker\js\bootstrap-datetimepicker.js" />
+    <Content Include="assets\bootstrap-fileupload\bootstrap-fileupload.css" />
+    <Content Include="assets\bootstrap-fileupload\bootstrap-fileupload.js" />
+    <Content Include="assets\bootstrap-inputmask\bootstrap-inputmask.min.js" />
+    <Content Include="assets\bootstrap-wysihtml5\bootstrap-wysihtml5.css" />
+    <Content Include="assets\bootstrap-wysihtml5\bootstrap-wysihtml5.js" />
+    <Content Include="assets\bootstrap-wysihtml5\wysihtml5-0.3.0.js" />
+    <Content Include="assets\font-awesome\css\font-awesome.css" />
+    <Content Include="assets\font-awesome\css\style-responsive.css" />
+    <Content Include="assets\font-awesome\css\style.css" />
+    <Content Include="assets\font-awesome\font\fontawesome-webfont.svg" />
+    <Content Include="cambiarclave.aspx" />
+    <Content Include="css\bootstrap-reset.css" />
+    <Content Include="css\bootstrap.min.css" />
+    <Content Include="css\style-responsive.css" />
+    <Content Include="css\style.css" />
+    <Content Include="default.aspx" />
+    <Content Include="go.aspx" />
+    <Content Include="img\ajax-loading.gif" />
+    <Content Include="img\arrow-up.png" />
+    <Content Include="img\avatar-mini4.jpg" />
+    <Content Include="img\cargando.gif" />
+    <Content Include="img\checkbox\check-off.png" />
+    <Content Include="img\checkbox\check-on.png" />
+    <Content Include="img\checkbox\radio-off.png" />
+    <Content Include="img\checkbox\radio-on.png" />
+    <Content Include="img\customSelect-arrow.gif" />
+    <Content Include="img\Flip Flop.gif" />
+    <Content Include="img\icon.jpg" />
+    <Content Include="img\icons\desconocido.ico" />
+    <Content Include="img\icons\disponible.ico" />
+    <Content Include="img\icons\icon.ico" />
+    <Content Include="img\icons\ocupado.ico" />
+    <Content Include="img\left-arrow.png" />
+    <Content Include="img\loading-box.gif" />
+    <Content Include="img\lock-bg.jpg" />
+    <Content Include="img\mask.png" />
+    <Content Include="img\nav-expand.png" />
+    <Content Include="img\noAvatar.png" />
+    <Content Include="img\right-arrow.png" />
+    <Content Include="img\search-icon.jpg" />
+    <Content Include="img\td_bg_drop.png" />
+    <Content Include="img\td_bg_falsa.png" />
+    <Content Include="img\td_bg_hooper.png" />
+    <Content Include="js\all\bootstrap.min.js" />
+    <Content Include="js\all\common-scripts.js" />
+    <Content Include="js\all\date.js" />
+    <Content Include="js\all\jquery-migrate-1.2.1.js" />
+    <Content Include="js\all\jquery.dcjqaccordion.2.7.js" />
+    <Content Include="js\all\jquery.history.js" />
+    <Content Include="js\all\jquery.js" />
+    <Content Include="js\all\jquery.nicescroll.js" />
+    <Content Include="js\all\jquery.scrollTo.min.js" />
+    <Content Include="js\all\respond.min.js" />
+    <Content Include="js\cambiarclave.js" />
+    <Content Include="js\default.js" />
+    <Content Include="js\general.js" />
+    <Content Include="js\login.js" />
+    <Content Include="js\page\mantenimiento\habitacion.js" />
+    <Content Include="js\page\mantenimiento\cliente.js" />
+    <Content Include="js\page\operacion\atencion.js" />
+    <Content Include="js\permiso.js" />
+    <Content Include="login.aspx" />
+    <Content Include="page\mantenimiento\habitacion.aspx" />
+    <Content Include="page\mantenimiento\cliente.aspx" />
+    <Content Include="page\operacion\atencion.aspx" />
+    <Content Include="permiso.aspx" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="cambiarclave.aspx.cs">
+      <DependentUpon>cambiarclave.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="cambiarclave.aspx.designer.cs">
+      <DependentUpon>cambiarclave.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="go.aspx.cs">
+      <DependentUpon>go.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="go.aspx.designer.cs">
+      <DependentUpon>go.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="login.aspx.cs">
+      <DependentUpon>login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="login.aspx.designer.cs">
+      <DependentUpon>login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="page\mantenimiento\habitacion.aspx.cs">
+      <DependentUpon>habitacion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="page\mantenimiento\habitacion.aspx.designer.cs">
+      <DependentUpon>habitacion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="page\mantenimiento\cliente.aspx.cs">
+      <DependentUpon>cliente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="page\mantenimiento\cliente.aspx.designer.cs">
+      <DependentUpon>cliente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="page\operacion\atencion.aspx.cs">
+      <DependentUpon>atencion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="page\operacion\atencion.aspx.designer.cs">
+      <DependentUpon>atencion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="permiso.aspx.cs">
+      <DependentUpon>permiso.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="permiso.aspx.designer.cs">
+      <DependentUpon>permiso.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ENTIDAD\ENTIDAD.csproj">
+      <Project>{a5e1e118-efa3-4af0-8c03-6bd252a27f20}</Project>
+      <Name>ENTIDAD</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NEGOCIOS\NEGOCIOS.csproj">
+      <Project>{0da7cf77-0279-49d9-a448-7d1992f8c3d0}</Project>
+      <Name>NEGOCIOS</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>4632</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:4569/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
