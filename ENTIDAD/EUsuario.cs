@@ -15,6 +15,9 @@ namespace ENTIDAD
         public DateTime FECHA_REG { get; set; }
         public int ESTADO { get; set; }
 
+        public EPerfil PERFIL { get; set; }
+        public string LOCAL_PERFIL { get; set; }
+
         #region EXTRAS
         public ELocal LOCAL { get; set; }
         #endregion

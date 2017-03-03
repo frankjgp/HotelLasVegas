@@ -198,11 +198,13 @@
     <Content Include="js\login.js" />
     <Content Include="js\page\mantenimiento\habitacion.js" />
     <Content Include="js\page\mantenimiento\cliente.js" />
+    <Content Include="js\page\mantenimiento\usuario.js" />
     <Content Include="js\page\operacion\atencion.js" />
     <Content Include="js\permiso.js" />
     <Content Include="login.aspx" />
     <Content Include="page\mantenimiento\habitacion.aspx" />
     <Content Include="page\mantenimiento\cliente.aspx" />
+    <Content Include="page\mantenimiento\usuario.aspx" />
     <Content Include="page\operacion\atencion.aspx" />
     <Content Include="permiso.aspx" />
     <Content Include="Web.config" />
@@ -249,6 +251,13 @@
     </Compile>
     <Compile Include="page\mantenimiento\cliente.aspx.designer.cs">
       <DependentUpon>cliente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="page\mantenimiento\usuario.aspx.cs">
+      <DependentUpon>usuario.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="page\mantenimiento\usuario.aspx.designer.cs">
+      <DependentUpon>usuario.aspx</DependentUpon>
     </Compile>
     <Compile Include="page\operacion\atencion.aspx.cs">
       <DependentUpon>atencion.aspx</DependentUpon>

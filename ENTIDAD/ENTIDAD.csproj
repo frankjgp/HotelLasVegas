@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="EHabitacion.cs" />
     <Compile Include="EMenu.cs" />
+    <Compile Include="EPerfil.cs" />
     <Compile Include="EReserva.cs" />
     <Compile Include="EEmpleado.cs" />
     <Compile Include="ERespuestaJson.cs" />
