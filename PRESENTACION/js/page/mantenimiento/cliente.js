@@ -66,40 +66,98 @@ function fc_listar_cliente() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         data: JSON.stringify({
-            nombre: $("#txt_nombreB").val(), apellido: $("#txt_apellidoB").val(), numerodoc: $("#txt_nrodocB").val()
+            nombre: $("#txt_nombreB").val(), apellido: $("#txt_apellidoB").val(), documento: $("#txt_nrodocB").val()
         }),
         async: true,
         beforeSend: function () {
-            $("#errorDiv").html('');
             $("#btn_buscar").attr("disabled", true);
+            $('#tbl_cliente tbody').empty();
         },
         success: function (data) {
             $("#btn_buscar").removeAttr("disabled");
 
             if (data.d.error) {
-                $("#errorDiv").html(GenerarAlertaError(data.d.error));
+                $("#msg").html(GenerarAlertaError(data.d.error));
                 return;
             }
 
-            $('#tbl_auto tbody').empty();
+            var htmlBotones = '<button name="editar" class="btn btn-primary btn-xs"><i class="icon-pencil"></i></button> ' +
+                                '<button name="anular" class="btn btn-danger btn-xs"><i class="icon-trash "></i></button> ';
 
-            var htmlBotones = '<td><button name="editar" class="btn btn-primary btn-xs"><i class="icon-pencil"></i></button>' +
-                                '<button name="anular" class="btn btn-danger btn-xs"><i class="icon-trash "></i></button></td>';
             var html = '';
-            for (var i = 0; i < data.d.length; i++) {
-                html += '<tr><td style="display:none">' + data.d[i].ID_CLIENTE + '</td>' + htmlBotones;
-                html += '<td>' + data.d[i].NOMBRES + '</td>';
-                html += '<td>' + data.d[i].APELLIDOS + '</td>';
-                html += '<td>' + data.d[i].DESCRIPCION + '</td>';
-                html += '<td>' + data.d[i].NUM_DOCUMENTO + '</td>';
-                html += '<td>' + data.d[i].TELEFONOS + '</td></tr>';
+            for (var i = 0; i < data.d.Resultado.length; i++) {
+                html += '<tr><td style="display:none">' + data.d.Resultado[i].ID_CLIENTE + '</td>';
+                html += '<td>' + htmlBotones + '</td>';
+                html += '<td>' + data.d.Resultado[i].NOMBRES + '</td>';
+                html += '<td>' + data.d.Resultado[i].APELLIDOS + '</td>';
+                html += '<td>' + data.d.Resultado[i].DESCRIPCION + '</td>';
+                html += '<td>' + data.d.Resultado[i].NUM_DOCUMENTO + '</td>';
+                html += '<td>' + data.d.Resultado[i].TELEFONOS + '</td></tr>';
             }
 
-            $("#tbl_auto tbody").append(html);
+            $("#tbl_cliente tbody").append(html);
 
-            $("#tbl_auto button").click(function () {
+            $("#tbl_cliente button").click(function () {
                 if ($(this).attr("name") == "editar") {
-                    fc_editar_cliente($(this).parent().parent().children(0).html());
+                    $('#pnl_cliente .modal-title').html('Editar Cliente');
+
+                    $.ajax({
+                        type: "POST",
+                        url: "page/mantenimiento/usuario.aspx/ListaClientesWM",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: JSON.stringify({ idEmpleado: $(this).parent().parent().find("td").eq(0).html() }),
+                        async: true,
+                        beforeSend: function () {
+                            $("#errorCliente").html('');
+                            $("#pnl_cliente button").attr("disabled", true);
+                        },
+                        success: function (data) {
+                            $("#tbl_cliente button").removeAttr("disabled");
+
+                            if (data.d.error) {
+                                $("#msg").html(GenerarAlertaError(data.d.error));
+                                return;
+                            }
+
+                            $("#txh_idcliente").val(data.d.Resultado[i].ID_CLIENTE);
+                            $("#txt_nombre").val(data.d.Resultado[i].NOMBRES.trim());
+                            $("#txt_apellido").val(data.d.Resultado[i].APELLIDOS.trim());
+                            $("#sel_tipodocumento").val(data.d.Resultado[i].ID_TIPO_DOCUMENTO);
+                            $("#txt_nrodoc").val(data.d.Resultado[i].NUM_DOCUMENTO);
+                            $("#txt_telefono").val(data.d.Resultado[i].TELEFONOS);
+
+                            if (data.d.beUsuario.no_usuario != "") {
+                                $('#chk_usuario').attr("disabled", "disabled");
+                                $('#chk_usuario').prop("checked", true);
+                                $('#txt_usuario').removeAttr("disabled");
+                                $("#sel_perfil").removeAttr("disabled");
+                                $('#sel_estadousuario').removeAttr("disabled");
+                                $('#chk_anular').removeAttr("disabled");
+                                $('#txt_bloqueo').removeAttr("disabled");
+                            } else {
+                                $('#chk_usuario').removeAttr("disabled");
+                                $('#chk_usuario').prop("checked", false);
+                                $('#txt_usuario').attr("disabled", "disabled");
+                                $("#sel_perfil").attr("disabled", "disabled");
+                                $('#sel_estadousuario').attr("disabled", "disabled");
+                                $('#chk_anular').attr("disabled", "disabled");
+                                $('#txt_bloqueo').attr("disabled", "disabled");
+                            }
+
+                            $("#txt_usuario").val(data.d.beUsuario.no_usuario);
+                            $("#sel_perfil").val(data.d.beUsuario.nid_perfil);
+                            $("#sel_estadousuario").val(data.d.beUsuario.fl_activo);
+                            $('#chk_anular').prop("checked", data.d.beUsuario.fl_anular);
+                            $("#txt_bloqueo").val(data.d.beUsuario.tx_bloqueo);
+
+                            $("#pnl_empleado").modal('show');
+                        },
+                        error: function (data) {
+                            $("#errorDiv").html(GenerarAlertaError("Inconveniente en la operación"));
+                            $("#tbl_cliente button").removeAttr("disabled");
+                        }
+                    });
                     event.preventDefault();
                 } else if ($(this).attr("name") == "anular") {
                     if (confirm("¿Esta seguro de anular cliente?")) {
@@ -169,18 +227,18 @@ function fc_editar_cliente(idCliente) {
             }
 
             ID_CLIENTE + '</td>' + htmlBotones;
-            html += '<td>' + data.d[i].NOMBRES + '</td>';
-            html += '<td>' + data.d[i].APELLIDOS + '</td>';
-            html += '<td>' + data.d[i].DESCRIPCION + '</td>';
-            html += '<td>' + data.d[i].NUM_DOCUMENTO + '</td>';
-            html += '<td>' + data.d[i].TELEFONOS + '</td></tr>';
+            html += '<td>' + data.d.Resultado[i].NOMBRES + '</td>';
+            html += '<td>' + data.d.Resultado[i].APELLIDOS + '</td>';
+            html += '<td>' + data.d.Resultado[i].DESCRIPCION + '</td>';
+            html += '<td>' + data.d.Resultado[i].NUM_DOCUMENTO + '</td>';
+            html += '<td>' + data.d.Resultado[i].TELEFONOS + '</td></tr>';
             
-            $("#txh_idcliente").val(data.d[0].ID_CLIENTE);
-            $("#txt_nombre").val(data.d[0].NOMBRES);
-            $("#txt_apellido").val(data.d[0].APELLIDOS);
-            $("#txt_nrodoc").val(data.d[0].NUM_DOCUMENTO);
-            $("#txt_telefono").val(data.d[0].TELEFONOS);
-            $("#sel_tipodocumento").val(data.d[0].ID_TIPO_DOCUMENTO);
+            $("#txh_idcliente").val(data.d.Resultado[0].ID_CLIENTE);
+            $("#txt_nombre").val(data.d.Resultado[0].NOMBRES);
+            $("#txt_apellido").val(data.d.Resultado[0].APELLIDOS);
+            $("#txt_nrodoc").val(data.d.Resultado[0].NUM_DOCUMENTO);
+            $("#txt_telefono").val(data.d.Resultado[0].TELEFONOS);
+            $("#sel_tipodocumento").val(data.d.Resultado[0].ID_TIPO_DOCUMENTO);
 
             $("#pnl_cliente").modal('show');
         },
@@ -240,186 +298,10 @@ $("#btn_nuevo").click(function () {
     setTimeout('$("#sel_tipopersona").focus()', 1000);
 });
 
-$("#btn_buscar").click(function () {
-    $.ajax({
-        type: "POST",
-        url: "page/mantenimiento/cliente.aspx/BuscarClienteWM",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        data: JSON.stringify({
-            tipoPersona: $("#sel_bus_tipopersona").val(), nroDoc: $("#txt_bus_nrodoc").val(), nombre: $("#txt_bus_nombre").val(),
-            razonSocial: $("#txt_bus_razonsocial").val(), tipoCliente: $("#sel_bus_tipocliente").val(),
-            represen: $("#txt_bus_representante").val(), anulado: $("#chk_bus_anulado").prop("checked")
-        }),
-        async: true,
-        beforeSend: function () {
-            $("#errorDiv").html('');
-            $("#btn_buscar").attr("disabled", true);
-        },
-        success: function (data) {
-            $("#btn_buscar").removeAttr("disabled");
-
-            if (data.d.error) {
-                $("#errorDiv").html(GenerarAlertaError(data.d.error));
-                return;
-            }
-
-            $('#tbl_cliente tbody').empty();
-
-            var htmlBotones = '<td><button name="editar" class="btn btn-primary btn-xs"><i class="icon-pencil"></i></button>' +
-                                '<button name="anular" class="btn btn-danger btn-xs"><i class="icon-trash "></i></button></td>';
-            var html = '';
-            for (var i = 0; i < data.d.length; i++) {
-                html += '<tr><td style="display:none">' + data.d[i].nid_cliente + '</td>' + htmlBotones;
-                html += '<td>' + data.d[i].fl_tipo_doc + '</td>';
-                html += '<td>' + data.d[i].nu_documento + '</td>';
-                html += '<td>' + (data.d[i].fl_tipo_persona == 'J' ? data.d[i].no_razon_social : data.d[i].no_natural + ' ' + data.d[i].no_apaterno + ' ' + data.d[i].no_amaterno) + '</td>';
-                html += '<td class="right-fgp">S/. ' + data.d[i].mo_credito + '</td></tr>';
-            }
-
-            $("#tbl_cliente tbody").append(html);
-
-            $("#tbl_cliente button").click(function () {
-                if ($(this).attr("name") == "editar") {
-                    fc_editar_cliente($(this).parent().parent().children(0).html());
-                    event.preventDefault();
-                } else if ($(this).attr("name") == "anular") {
-                    if (confirm("¿Esta seguro de anular cliente?")) {
-                        $.ajax({
-                            type: "POST",
-                            url: "page/mantenimiento/cliente.aspx/AnularClienteWM",
-                            contentType: "application/json; charset=utf-8",
-                            dataType: "json",
-                            data: JSON.stringify({ idCliente: $(this).parent().parent().children(0).html() }),
-                            async: true,
-                            beforeSend: function () {
-                                $("#tbl_cliente button").attr("disabled", true);
-                            },
-                            success: function (data) {
-                                $("#tbl_cliente button").removeAttr("disabled");
-
-                                if (data.d.error) {
-                                    $("#errorDiv").html(GenerarAlertaError(data.d.error));
-                                    return;
-                                }
-
-                                $("#errorDiv").html(GenerarAlertaSuccess(data.d.success));
-                                $("#btn_buscar").click();
-                            },
-                            error: function (data) {
-                                $("#errorDiv").html(GenerarAlertaError("Inconveniente en la operación"));
-                                $("#tbl_cliente button").removeAttr("disabled");
-                            }
-                        });
-                        event.preventDefault();
-                    }
-                }
-            });
-
-            $("#tbl_cliente tbody tr").dblclick(function () {
-                fc_editar_cliente($(this).children(0).html());
-                event.preventDefault();
-            });
-        },
-        error: function (data) {
-            $("#errorDiv").html(GenerarAlertaError("Inconveniente en la operación"));
-            $("#btn_buscar").removeAttr("disabled");
-        }
-    });
-});
-
-
 $("#pnl_busqueda input:text").keyup(function (e) {
     if (e.keyCode == 13) {
         $("#btn_buscar").click();
     }
-});
-
-$("#sel_tipopersona").change(function () {
-    $("#pnl_cliente_juridico").hide();
-    $("#pnl_cliente_natural").hide();
-    $("#btn_buscar_externo").attr("disabled", true);
-    $("#txt_tipodoc").val('');
-
-    if ($(this).val() == "J") {
-        $("#btn_buscar_externo").removeAttr("disabled");
-        $("#txt_tipodoc").val('RUC');
-        $("#pnl_cliente_juridico").show();
-    } else if ($(this).val() == "N") {
-        $("#txt_tipodoc").val('DNI');
-        $("#pnl_cliente_natural").show();
-    }
-});
-
-$("#btn_buscar_externo").click(function () {
-    $("#errorCliente").html('');
-    if ($("#sel_tipopersona").val() == "J") {
-        if (isNaN($("#txt_nrodoc").val())) {
-            $("#errorCliente").html(GenerarAlertaWarning("N° Dcto.: solo permite numeros"));
-            return;
-        }
-        else if ($("#txt_nrodoc").val().length != 11) {
-            $("#errorCliente").html(GenerarAlertaWarning("N° Dcto.: 11 digitos"));
-            return;
-        } else {
-            $.ajax({
-                type: "POST",
-                url: "page/mantenimiento/cliente.aspx/ObtenerClienteExternoWM",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                data: JSON.stringify({ nroDoc: $("#txt_nrodoc").val() }),
-                async: true,
-                beforeSend: function () {
-                    $("#btn_buscar_externo").attr("disabled", true);
-                },
-                success: function (data) {
-                    $("#btn_buscar_externo").removeAttr("disabled");
-
-                    if (data.d.error) {
-                        $("#errorCliente").html(GenerarAlertaError(data.d.error));
-                        return;
-                    }
-
-                    $("#txt_razonsocial").val();
-                },
-                error: function (data) {
-                    $("#errorCliente").html(GenerarAlertaError("Inconveniente en la operación"));
-                    $("#btn_buscar_externo").removeAttr("disabled");
-                }
-            });
-        }
-    }
-});
-
-$("#btn_add_contacto").click(function () {
-    $("#tbl_contacto tbody").append('<tr>' +
-                                        '<td><input type="text" class="form-control input-sm"/></td>' +
-                                        '<td><input type="text" class="form-control input-sm"/></td>' +
-                                        '<td><input type="text" class="form-control input-sm"/></td>' +
-                                        '<td><input type="text" class="form-control input-sm"/></td>' +
-                                        '<td><input type="text" class="form-control input-sm"/></td>' +
-                                        '<td><input type="checkbox" /></td>' +
-                                        '<td style="display:none"><input type="text" class="form-control input-sm"/></td>' +
-                                        '<td class="center">' +
-                                            '<button class="btn btn-info btn-xs" onclick="fc_nota_contacto(this)"><i class="icon-comment"></i></button>' +
-                                            '<button class="btn btn-danger btn-xs" onclick="fc_anular_contacto(this)"><i class="icon-minus"></i></button>' +
-                                        '</td>' +
-                                    '</tr>');
-});
-
-function fc_anular_contacto(obj) {
-    $(obj).parent().parent().remove();
-}
-
-function fc_nota_contacto(obj) {
-    inputNota = $(obj).parent().parent().find("input").eq(6);
-    $("#txt_nota").val(inputNota.val());
-    $("#pnl_cliente_nota").modal('show');
-}
-
-$("#btn_nota_guardar").click(function () {
-    inputNota.val($("#txt_nota").val());
-    $("#pnl_cliente_nota").modal('hide');
 });
 
 $("#btn_guardar").click(function () {
