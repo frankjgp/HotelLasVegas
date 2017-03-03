@@ -20,12 +20,12 @@ namespace DATOS
                 SqlCommand cmd = new SqlCommand("USP_MANTENIMIENTO_CLIENTE", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("@ID_CLIENTE", SqlDbType.Int).Value = objE.ID_CLIENTE;
-                cmd.Parameters.Add("@NOMBRES", SqlDbType.VarChar).Value = objE.ID_CLIENTE;
-                cmd.Parameters.Add("@APELLIDOS", SqlDbType.VarChar).Value = objE.ID_CLIENTE;
-                cmd.Parameters.Add("@ID_TIPO_DOCUMENTO", SqlDbType.Int).Value = objE.ID_CLIENTE;
-                cmd.Parameters.Add("@NUM_DOCUMENTO", SqlDbType.VarChar).Value = objE.ID_CLIENTE;
-                cmd.Parameters.Add("@TELEFONOS", SqlDbType.VarChar).Value = objE.ID_CLIENTE;
-                cmd.Parameters.Add("@USU_MOD", SqlDbType.Int).Value = objE.ID_CLIENTE;
+                cmd.Parameters.Add("@NOMBRES", SqlDbType.VarChar).Value = objE.NOMBRES;
+                cmd.Parameters.Add("@APELLIDOS", SqlDbType.VarChar).Value = objE.APELLIDOS;
+                cmd.Parameters.Add("@ID_TIPO_DOCUMENTO", SqlDbType.Int).Value = objE.ID_TIPO_DOCUMENTO;
+                cmd.Parameters.Add("@NUM_DOCUMENTO", SqlDbType.VarChar).Value = objE.NUM_DOCUMENTO;
+                cmd.Parameters.Add("@TELEFONOS", SqlDbType.VarChar).Value = objE.TELEFONOS;
+                cmd.Parameters.Add("@USU_MOD", SqlDbType.Int).Value = objE.USU_MOD;
                 cmd.Parameters.Add("@OPCION", SqlDbType.Int).Value = 1;
 
                 cn.Open();
@@ -49,6 +49,30 @@ namespace DATOS
             return lista;
         }
 
+        public static List<ECliente> ListarTiposDocumento()
+        {
+            List<ECliente> lista = new List<ECliente>();
+
+            using (SqlConnection cn = new SqlConnection(DConexion.Get_Connection(DConexion.DataBase.CnLasVegas)))
+            {
+                SqlCommand cmd = new SqlCommand("USP_LISTAR_TIPO_DOCUMENTO", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    while (dr.Read())
+                    {
+                        ECliente mItem = new ECliente();
+                        mItem.ID_TIPO_DOCUMENTO = dr.IsDBNull(dr.GetOrdinal("ID_TIPO_DOCUMENTO")) ? 0 : dr.GetInt32(dr.GetOrdinal("ID_TIPO_DOCUMENTO"));
+                        mItem.DESCRIPCION = dr.IsDBNull(dr.GetOrdinal("DESCRIPCION")) ? string.Empty : dr.GetString(dr.GetOrdinal("DESCRIPCION"));
+                       lista.Add(mItem);
+                    }
+                }
+            }
+            return lista;
+        }
         public static int ActualizarClientes(ECliente objE)
         {
             int respFinal = 0;
@@ -67,9 +91,13 @@ namespace DATOS
                 cmd.Parameters.Add("@OPCION", SqlDbType.Int).Value = objE.OPCION;
 
                 cn.Open();
-                respFinal = (int)cmd.ExecuteScalar();
+                respFinal = cmd.ExecuteNonQuery();
             }
             return respFinal;
         }
+
+        
+
+
     }
 }
