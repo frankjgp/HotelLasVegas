@@ -10,6 +10,21 @@ namespace NEGOCIOS
 {
     public static class NUsuario
     {
+        public static List<EEmpleado> ListarUsuarios(EEmpleado objE)
+        {
+            return DUsuario.ListarUsuarios(objE);
+        }
+
+        public static int ActualizarUsuarios(EEmpleado objE)
+        {
+            return DUsuario.ActualizarUsuarios(objE);
+        }
+
+        public static List<EPerfil> ListarPerfiles()
+        {
+            return DUsuario.ListarPerfiles();
+        }
+
         public static EUsuario Login(EUsuario ent)
         {
             return DUsuario.Login(ent);

@@ -15,5 +15,8 @@ namespace ENTIDAD
         public decimal SUELDO { get; set; }
         public DateTime FECHA_REG { get; set; }
         public int ESTADO { get; set; }
+        public EUsuario USUARIO { get; set; }
+
+        public int OPCION { get; set; }
     }
 }
