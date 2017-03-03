@@ -19,5 +19,9 @@ namespace NEGOCIOS
         {
             return DCliente.ListarClientes(ent);
         }
+        public static List<ECliente> ListarTiposDocumento()
+        {
+            return DCliente.ListarTiposDocumento();
+        }
     }
 }

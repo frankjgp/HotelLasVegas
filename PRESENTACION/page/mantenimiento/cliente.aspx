@@ -2,13 +2,16 @@
 
 <head>
     <style type="text/css">
-        #txt_bus_nrodoc0 {
-            width: 197px;
+        #sel_tipodocumentoB {
+            width: 130px;
+        }
+        #sel_tipodocumento {
+            width: 130px;
         }
     </style>
 </head>
 
-<div id="errorDiv"></div>
+<div id="msg"></div>
 <div class="row">
     <div class="col-lg-12">
         <section class="panel">
@@ -32,32 +35,17 @@
                     <div class="col-lg-2">
                         <div class="form-group">
                             Nombres&nbsp;
-                            <input id="txt_nombreB" class="form-control input-sm" type="text" maxlength="200" /></div>
+                            <input id="txt_nombreB" name="nombre" class="form-control input-sm" type="text" maxlength="200" /></div>
                     </div>
                     <div class="col-lg-2">
                         <div class="form-group">
                             Apellidos&nbsp;
-                            <input id="txt_bus_nrodocB" class="form-control input-sm" type="text" maxlength="200" /></div>
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="form-group">
-                            Tipo de Documento
-                            <select id="sel_tipodocumentoB" class="form-control input-sm" name="D1">
-                                <option value="0">Todos</option>
-                                <option value="J">Juridico</option>
-                                <option value="N">Natural</option>
-                            </select></div>
+                            <input id="txt_apellidoB" name="apellido" class="form-control input-sm" type="text" maxlength="200" /></div>
                     </div>
                     <div class="col-lg-2">
                         <div class="form-group">
                             N° Documento
-                            <input id="txt_nrodocB" class="form-control input-sm" type="text" maxlength="20" />
-                        </div>
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="form-group">
-                            Teléfonos
-                            <input id="txt_telefonoB" class="form-control input-sm" type="text" maxlength="1000" />
+                            <input id="txt_nrodocB" name="documento" class="form-control input-sm" type="text" maxlength="20" />
                         </div>
                     </div>
                 </div>
@@ -113,15 +101,12 @@
                     <div class="col-lg-2">
                         <div class="form-group">
                             Apellidos&nbsp;
-                            <input id="txt_apellidos" class="form-control input-sm" type="text" maxlength="200" /></div>
+                            <input id="txt_apellido" class="form-control input-sm" type="text" maxlength="200" /></div>
                     </div>
                     <div class="col-lg-2">
                         <div class="form-group">
                             Tipo de Documento
                             <select id="sel_tipodocumento" class="form-control input-sm" name="D1">
-                                <option value="0">Todos</option>
-                                <option value="J">Juridico</option>
-                                <option value="N">Natural</option>
                             </select></div>
                     </div>
                     <div class="col-lg-2">
