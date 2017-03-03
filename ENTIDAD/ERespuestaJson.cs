@@ -8,6 +8,12 @@ namespace ENTIDAD
 {
     public class ERespuestaJson
     {
+        public ERespuestaJson()
+        {
+            Activo = true;
+            TipoMensaje = Tipo.Success;
+        }
+
         public bool Activo { get; set; }
         public string TipoMensaje { get; set; }
         public string Mensaje { get; set; }

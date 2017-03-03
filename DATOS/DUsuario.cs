@@ -49,7 +49,7 @@ namespace DATOS
 
             using (SqlConnection cn = new SqlConnection(DConexion.Get_Connection(DConexion.DataBase.CnLasVegas)))
             {
-                SqlCommand cmd = new SqlCommand("USP_LOGIN", cn);
+                SqlCommand cmd = new SqlCommand("USP_LOGIN_LOCAL", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("@id_usuario", SqlDbType.Int).Value = id_usuario;
 
@@ -61,8 +61,36 @@ namespace DATOS
                     {
                         ELocal eLocal = new ELocal();
                         eLocal.ID_LOCAL = dr.IsDBNull(dr.GetOrdinal("ID_LOCAL")) ? 0 : dr.GetInt32(dr.GetOrdinal("ID_LOCAL"));
-                        eLocal.DESCRIPCION = dr.IsDBNull(dr.GetOrdinal("DESCRIPCION ")) ? string.Empty : dr.GetString(dr.GetOrdinal("DESCRIPCION "));
+                        eLocal.DESCRIPCION = dr.IsDBNull(dr.GetOrdinal("DESCRIPCION")) ? string.Empty : dr.GetString(dr.GetOrdinal("DESCRIPCION"));
                         lista.Add(eLocal);
+                    }
+                }
+            }
+            return lista;
+        }
+
+        public static List<EMenu> PerfilUsuario(int id_usuario)
+        {
+            List<EMenu> lista = new List<EMenu>();
+
+            using (SqlConnection cn = new SqlConnection(DConexion.Get_Connection(DConexion.DataBase.CnLasVegas)))
+            {
+                SqlCommand cmd = new SqlCommand("USP_LOGIN_PERFIL", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@id_usuario", SqlDbType.Int).Value = id_usuario;
+
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    while (dr.Read())
+                    {
+                        EMenu eMenu = new EMenu();
+                        eMenu.ID_MENU = dr.IsDBNull(dr.GetOrdinal("ID_MENU")) ? 0 : dr.GetInt32(dr.GetOrdinal("ID_MENU"));
+                        eMenu.ID_PADRE = dr.IsDBNull(dr.GetOrdinal("ID_PADRE")) ? 0 : dr.GetInt32(dr.GetOrdinal("ID_PADRE"));
+                        eMenu.DESCRIPCION = dr.IsDBNull(dr.GetOrdinal("DESCRIPCION")) ? string.Empty : dr.GetString(dr.GetOrdinal("DESCRIPCION"));
+                        eMenu.URL = dr.IsDBNull(dr.GetOrdinal("URL")) ? string.Empty : dr.GetString(dr.GetOrdinal("URL"));
+                        lista.Add(eMenu);
                     }
                 }
             }

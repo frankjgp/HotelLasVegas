@@ -30,13 +30,13 @@ namespace PRESENTACION
                 eUsuario = NUsuario.Login(eUsuario);
 
                 if (eUsuario == null)
+                {
                     objRespuesta.Error("El usuario no existe o Contraseña incorrecta");
-                //else if (beTrabajador.beUsuario.fl_activo == BEUtil.UsuarioEstado.Bloqueado) data = new { estado = "error", descripcion = "El Perfil de Usuario se encuentra bloqueado" };
-                //else if (beTrabajador.fl_activo == BEUtil.Estado.Anulado) data = new { estado = "error", descripcion = "El Trabajador se encuentra bloqueado" };
+                }
                 else
                 {
                     HttpContext.Current.Session["UserData"] = eUsuario;
-                    objRespuesta.Success("permiso.aspx");
+                    objRespuesta.Resultado = "permiso.aspx";
                 }
             }
             catch (Exception ex)

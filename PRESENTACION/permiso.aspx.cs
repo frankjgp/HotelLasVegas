@@ -36,37 +36,37 @@ namespace PRESENTACION
                 objRespuesta.Error(string.IsNullOrEmpty(ex.Message) ? ex.InnerException.Message : ex.Message);
             }
 
-            return objRespuesta.Resultado;
+            return objRespuesta;
         }
 
         [WebMethod()]
         public static object AceptarWM(int idLocal, string local)
         {
-            object data = null;
+            ERespuestaJson objRespuesta = new ERespuestaJson();
             try
             {
                 if (HttpContext.Current.Session["UserData"] == null)
                 {
-                    return new { error = "Su sesión ha expirado, por favor vuelva a iniciar sesión" };
+                    objRespuesta.Error("Su sesión ha expirado, por favor vuelva a iniciar sesión");
                 }
-                //BETrabajador beSession = (BETrabajador)HttpContext.Current.Session["UserData"];
+                EUsuario eSession = (EUsuario)HttpContext.Current.Session["UserData"];
 
-                //beSession.nid_empresa = idEmpresa;
-                //beSession.no_empresa = empresa;
-                //beSession.nid_almacen = idAlmacen;
-                //beSession.no_almacen = almacen;
-                //beSession.nid_local = idLocal;
-                //beSession.no_local = local;
+                eSession.LOCAL = new ELocal()
+                {
+                    ID_LOCAL = idLocal,
+                    DESCRIPCION = local
+                };
 
-                //HttpContext.Current.Session["UserData"] = beSession;
+                HttpContext.Current.Session["UserData"] = eSession;
 
-                data = new { redirect = "go.aspx" };
+                objRespuesta.Resultado = "go.aspx";
             }
             catch (Exception ex)
             {
-                data = new { error = string.IsNullOrEmpty(ex.Message) ? ex.InnerException.Message : ex.Message };
+                objRespuesta.Error(string.IsNullOrEmpty(ex.Message) ? ex.InnerException.Message : ex.Message);
             }
-            return data;
+
+            return objRespuesta;
         }
     }
 }

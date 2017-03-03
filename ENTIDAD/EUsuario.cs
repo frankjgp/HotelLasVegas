@@ -14,5 +14,9 @@ namespace ENTIDAD
         public string PASSWORD { get; set; }
         public DateTime FECHA_REG { get; set; }
         public int ESTADO { get; set; }
+
+        #region EXTRAS
+        public ELocal LOCAL { get; set; }
+        #endregion
     }
 }

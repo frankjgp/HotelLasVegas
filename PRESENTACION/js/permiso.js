@@ -10,13 +10,13 @@
             $("#frmPermiso :input").attr("disabled", true);
         },
         success: function (data, status) {
-            if (data.d.error) {
-                $("#msg").html(GenerarAlertaError(data.d.error));
+            if (!data.d.Activo) {
+                $("#msg").html(GenerarAlertaError(data.d.Mensaje));
                 return;
             }
 
-            for (var i = 0; i < data.d.listaLocal.length; i++) {
-                $('#local').append("<option value='" + data.d.listaLocal[i].nid_local + "'>" + data.d.listaLocal[i].no_local + "</option>");
+            for (var i = 0; i < data.d.Resultado.length; i++) {
+                $('#local').append("<option value='" + data.d.Resultado[i].ID_LOCAL + "'>" + data.d.Resultado[i].DESCRIPCION + "</option>");
             }
 
             $("#frmPermiso :input").removeAttr("disabled");
@@ -31,17 +31,14 @@ $(function () {
 
     $(document).keyup(function (e) {
         if (e.keyCode == 13) {
-            if ($(this).attr("id") == "empresa") $("#almacen").focus();
-            else if ($(this).attr("id") == "almacen") $("#local").focus();
-            else if ($(this).attr("id") == "local") $("#btnAceptar").click();
-            else $("#empresa").focus();
+            if ($(this).attr("id") == "local") $("#btnAceptar").click();
+            else $("#local").focus();
         }
     });
 
     $("#btnAceptar").click(function () {
         var msjValida = "";
-        if ($("#empresa").val() == "" || $("#empresa").val() == "0") msjValida += "Seleccione Empresa</br>";
-        if ($("#almacen").val() == "" || $("#almacen").val() == "0") msjValida += "Seleccione Almacen</br>";
+
         if ($("#local").val() == "" || $("#local").val() == "0") msjValida += "Seleccione Local</br>";
 
         if (msjValida != "") {
@@ -55,11 +52,7 @@ $(function () {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             data: JSON.stringify({
-                idEmpresa: $("#empresa :selected").val(),
-                idAlmacen: $("#almacen :selected").val(),
                 idLocal: $("#local :selected").val(),
-                empresa: $("#empresa :selected").text(),
-                almacen: $("#almacen :selected").text(),
                 local: $("#local :selected").text()
             }),
             async: true,
@@ -67,19 +60,19 @@ $(function () {
                 $("#frmPermiso :input").attr("disabled", true);
             },
             success: function (data) {
-                if (data.d.error) {
-                    $("#msg").html(GenerarAlertaError(data.d.error));
+                if (!data.d.Activo) {
+                    $("#msg").html(GenerarAlertaError(data.d.Mensaje));
                     $("#frmPermiso :input").removeAttr("disabled");
-                    $("#empresa").focus();
+                    $("#local").focus();
                     return;
                 }
-                
-                window.location = data.d.redirect;
+
+                window.location = data.d.Resultado;
             },
             error: function (data) {
                 $("#msg").html(GenerarAlertaError("Inconveniente en la operación"));
                 $("#frmPermiso :input").removeAttr("disabled");
-                $("#usuario").focus();
+                $("#local").focus();
             }
         });
     });

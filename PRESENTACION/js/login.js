@@ -35,7 +35,7 @@
                     $("#frmLogin :input").removeAttr("disabled");
                     $("#usuario").focus();
                 } else {
-                    window.location = data.d.Mensaje;
+                    window.location = data.d.Resultado;
                 }
             },
             error: function (data) {

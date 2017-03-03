@@ -19,5 +19,10 @@ namespace NEGOCIOS
         {
             return DUsuario.PermisoLocal(id_usuario);
         }
+
+        public static List<EMenu> PerfilUsuario(int id_usuario)
+        {
+            return DUsuario.PerfilUsuario(id_usuario).ToList();
+        }
     }
 }

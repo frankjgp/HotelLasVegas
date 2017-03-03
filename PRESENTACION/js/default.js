@@ -46,7 +46,7 @@ $(document).ready(function () {
             dataType: "json",
             async: true,
             success: function (data, status) {
-                window.location = data.d;
+                window.location = data.d.Resultado;
             },
             error: function (data) { }
         });
@@ -61,40 +61,43 @@ function InfoSesion() {
         dataType: "json",
         async: true,
         success: function (data, status) {
-            if (data.d.estado == "error") {
-                alert(data.d.descripcion);
+            if (!data.d.Activo) {
+                alert(data.d.Mensaje);
                 window.location = "login.aspx";
                 return;
             }
             /************************SESSION****************************/
-            $(".username").text(data.d.Usuario);
-            $("#companyLogged").text(data.d.EmpresaDesc + " - " + data.d.LocalDesc);
+            $(".username").text(data.d.Resultado.Usuario);
+            $("#companyLogged").text(data.d.Resultado.LocalDesc);
 
             /************************MENU****************************/
             var htmlMenu = '';
-            var nid_menu_anterior = 0;
+            var id_padre_anterior = -1;
 
-            for (var i = 0; i < data.d.ListaMenu.length; i++) {
+            for (var i = 0; i < data.d.Resultado.ListaMenu.length; i++) {
                 //Lista de Menus
-                if (data.d.ListaMenu[i].nid_menu != nid_menu_anterior) {
-                    
+                if (data.d.Resultado.ListaMenu[i].ID_PADRE != id_padre_anterior) {
+
                     if (htmlMenu != '') htmlMenu += '</ul></li>';
 
                     htmlMenu += '<li class="sub-menu">' +
                                       '<a href="javascript:;" >' +
                                           '<i class="icon-gears"></i>' +
-                                          '<span>' + data.d.ListaMenu[i].no_menu + '</span>' +
+                                          '<span>' + data.d.Resultado.ListaMenu[i].DESCRIPCION + '</span>' +
                                       '</a><ul class="sub">';
+
+                    id_padre_anterior = data.d.Resultado.ListaMenu[i].ID_MENU;
                 }
-                nid_menu_anterior = data.d.ListaMenu[i].nid_menu;
 
                 //Lista de Opciones
-                htmlMenu += '<li><a  href="#!/' + data.d.ListaMenu[i].url_pagina + '">' + data.d.ListaMenu[i].no_opcion + '</a></li>';
+                if (id_padre_anterior == data.d.Resultado.ListaMenu[i].ID_PADRE) {
+                    htmlMenu += '<li><a  href="#!/' + data.d.Resultado.ListaMenu[i].URL + '">' + data.d.Resultado.ListaMenu[i].DESCRIPCION + '</a></li>';
+                }
             }
 
             $(".sidebar-menu").append(htmlMenu);
 
-            if (data.d.Perfil == 2) _globalNotificacion = setInterval(InfoNotificacionAlmacen, 10000);
+            //if (data.d.Perfil == 2) _globalNotificacion = setInterval(InfoNotificacionAlmacen, 10000);
 
             $.getScript("js/all/common-scripts.js")
             .fail(function (jqxhr, settings, exception) {
