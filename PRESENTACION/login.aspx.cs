@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Services;
 using ENTIDAD;
+using NEGOCIOS;
 
 namespace PRESENTACION
 {
@@ -23,22 +24,20 @@ namespace PRESENTACION
             try
             {
                 /*Valida usuario*/
-                //BEUsuario beUsuario = new BEUsuario();
-                //beUsuario.no_usuario = usuario.Trim();
-                //beUsuario.no_clave = clave.Trim();
-                //BDTrabajador bdTrabajador = new BDTrabajador();
-                //BETrabajador beTrabajador = bdTrabajador.Validar_Usuario(beUsuario);
+                EUsuario eUsuario = new EUsuario();
+                eUsuario.DSC_USUARIO = usuario.Trim();
+                eUsuario.PASSWORD = clave.Trim();
+                eUsuario = NUsuario.Login(eUsuario);
 
-                //if (beTrabajador == null) data = new { estado = "error", descripcion = "El usuario no existe o Contraseña incorrecta" };
+                if (eUsuario == null)
+                    objRespuesta.Error("El usuario no existe o Contraseña incorrecta");
                 //else if (beTrabajador.beUsuario.fl_activo == BEUtil.UsuarioEstado.Bloqueado) data = new { estado = "error", descripcion = "El Perfil de Usuario se encuentra bloqueado" };
                 //else if (beTrabajador.fl_activo == BEUtil.Estado.Anulado) data = new { estado = "error", descripcion = "El Trabajador se encuentra bloqueado" };
-                //else
-                //{
-                //    HttpContext.Current.Session["UserData"] = beTrabajador;
-                //    if (beTrabajador.beUsuario.fl_activo == BEUtil.UsuarioEstado.ResetClave) data = new { estado = "success", descripcion = "cambiarClave.aspx" };
-                //    else data = new { estado = "success", descripcion = "permiso.aspx" };
-                //}
-                objRespuesta.Success("permiso.aspx");
+                else
+                {
+                    HttpContext.Current.Session["UserData"] = eUsuario;
+                    objRespuesta.Success("permiso.aspx");
+                }
             }
             catch (Exception ex)
             {

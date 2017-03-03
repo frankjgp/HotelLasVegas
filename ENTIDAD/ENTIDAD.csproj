@@ -39,7 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EEmpleado.cs" />
     <Compile Include="ERespuestaJson.cs" />
+    <Compile Include="ELocal.cs" />
+    <Compile Include="EUsuario.cs" />
     <Compile Include="EUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

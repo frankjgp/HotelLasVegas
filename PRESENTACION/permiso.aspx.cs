@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Services;
+using ENTIDAD;
+using NEGOCIOS;
 
 namespace PRESENTACION
 {
@@ -18,24 +20,22 @@ namespace PRESENTACION
         [WebMethod()]
         public static object ListarPermisosWM()
         {
+            ERespuestaJson objRespuesta = new ERespuestaJson();
             try
             {
                 if (HttpContext.Current.Session["UserData"] == null)
                 {
-                    return new { error = "Su sesión ha expirado, por favor vuelva a iniciar sesión" };
+                    objRespuesta.Error("Su sesión ha expirado, por favor vuelva a iniciar sesión");
                 }
-                //BETrabajador beSession = (BETrabajador)HttpContext.Current.Session["UserData"];
+                EUsuario eSession = (EUsuario)HttpContext.Current.Session["UserData"];
 
-                //BDTrabajador bdTrabajador = new BDTrabajador();
-                //List<BEEmpresa> listaEmpresa = bdTrabajador.Obtener_UsuarioEmpresa(beSession.beUsuario);
-                //List<BEAlmacen> listaAlmacen = bdTrabajador.Obtener_UsuarioAlmacen(beSession.beUsuario);
-                //List<BELocal> listaLocal = bdTrabajador.Obtener_UsuarioLocal(beSession.beUsuario);
+                objRespuesta.Resultado = NUsuario.PermisoLocal(eSession.ID_USUARIO);
 
                 return new { listaLocal = new List<string>() };
             }
             catch (Exception ex)
             {
-                return new { error = string.IsNullOrEmpty(ex.Message) ? ex.InnerException.Message : ex.Message };
+                objRespuesta.Error(string.IsNullOrEmpty(ex.Message) ? ex.InnerException.Message : ex.Message);
             }
         }
 
