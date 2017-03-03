@@ -33,6 +33,10 @@ namespace PRESENTACION
                 {
                     objRespuesta.Error("El usuario no existe o Contraseña incorrecta");
                 }
+                else if (eUsuario.ESTADO == 2)
+                {
+                    objRespuesta.Error("El usuario se encuentra desactivado");
+                }
                 else
                 {
                     HttpContext.Current.Session["UserData"] = eUsuario;

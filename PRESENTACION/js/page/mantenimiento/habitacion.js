@@ -11,24 +11,21 @@ $(function () {
         dataType: "json",
         async: true,
         beforeSend: function () {
-            $('#sel_bus_modelo').empty();
+            $('#sel_bus_tipo').empty();
             $('#sel_bus_submodelo').empty();
-            $('#sel_modelo').empty();
-            $('#sel_submodelo').empty();
+            $('#sel_tipo').empty();
         },
         success: function (data) {
             if (data.d.error) {
                 $("#errorDiv").html(GenerarAlertaError(data.d.error));
                 return;
             }
-            $('#sel_bus_submodelo').append("<option value='0'>Seleccione</option>");
-            $('#sel_submodelo').append("<option value='0'>Seleccione</option>");
 
-            $('#sel_bus_modelo').append("<option value='0'>Todos</option>");
-            $('#sel_modelo').append("<option value='0'>Seleccione</option>");
+            $('#sel_bus_tipo').append("<option value='0'>Todos</option>");
+            $('#sel_tipo').append("<option value='0'>Seleccione</option>");
             for (var i = 0; i < data.d.length; i++) {
-                $('#sel_bus_modelo').append("<option value='" + data.d[i].nid_modelo_auto + "'>" + data.d[i].no_modelo_auto + "</option>");
-                $('#sel_modelo').append("<option value='" + data.d[i].nid_modelo_auto + "'>" + data.d[i].no_modelo_auto + "</option>");
+                $('#sel_bus_tipo').append("<option value='" + data.d[i].nid_modelo_auto + "'>" + data.d[i].no_modelo_auto + "</option>");
+                $('#sel_tipo').append("<option value='" + data.d[i].nid_modelo_auto + "'>" + data.d[i].no_modelo_auto + "</option>");
             }
         },
         error: function (data) {
@@ -38,41 +35,6 @@ $(function () {
 });
 
 /*Eventos definidos*/
-function fc_obtener_submodelo(control, mensaje, index0, indexSel, modelo) {
-    $.ajax({
-        type: "POST",
-        url: "page/mantenimiento/habitacion.aspx/ObtenerSubModeloWM",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        data: JSON.stringify({ modelo: modelo }),
-        async: true,
-        beforeSend: function () {
-            $("#sel_" + control + "modelo").attr("disabled", true);
-            $("#sel_" + control + "submodelo").attr("disabled", true);
-        },
-        success: function (data) {
-            $("#sel_" + control + "modelo").removeAttr("disabled");
-            $("#sel_" + control + "submodelo").removeAttr("disabled");
-
-            if (data.d.error) {
-                $("#error" + mensaje).html(GenerarAlertaError(data.d.error));
-                return;
-            }
-
-            $('#sel_' + control + 'submodelo').append("<option value='0'>" + index0 + "</option>");
-            for (var x = 0; x < data.d.length; x++) {
-                $('#sel_' + control + 'submodelo').append("<option value='" + data.d[x].nid_submodelo_auto + "'>" + data.d[x].no_submodelo_auto + "</option>");
-            }
-            $('#sel_' + control + 'submodelo').val(indexSel);
-        },
-        error: function (data) {
-            $("#error" + mensaje).html(GenerarAlertaError("Inconveniente en la operación"));
-            $("#sel_" + control + "modelo").removeAttr("disabled");
-            $("#sel_" + control + "submodelo").removeAttr("disabled");
-        }
-    });
-}
-
 function fc_editar_auto(idAuto) {
     $('#pnl_auto .modal-title').html('Editar Auto');
 
@@ -99,7 +61,7 @@ function fc_editar_auto(idAuto) {
             $("#txt_placa").val(data.d.nu_placa.trim());
             $("#txt_kilometraje").val(data.d.nu_kilometraje);
             $("#txt_intervalo").val(data.d.nu_intervalo);
-            $("#sel_modelo").val(data.d.nid_modelo_auto);
+            $("#sel_tipo").val(data.d.nid_modelo_auto);
             $("#txh_idcliente").val(data.d.nid_cliente);
             $("#txt_nucliente").val(data.d.nu_cliente);
             $("#txt_nocliente").val(data.d.no_cliente);
@@ -147,7 +109,7 @@ $("#btn_limpiar").click(function () {
     $("#errorDiv").html('');
     $("#pnl_busqueda input:text").val('');
     $("#pnl_busqueda select").val('0');
-    $("#txt_bus_placa").focus();
+    $("#txt_bus_numero").focus();
 });
 
 $("#btn_nuevo").click(function () {
@@ -161,23 +123,23 @@ $("#btn_nuevo").click(function () {
     setTimeout('$("#txt_placa").focus()', 1000);
 });
 
-$("#sel_bus_modelo").change(function () {
+$("#sel_bus_tipo").change(function () {
     $('#sel_bus_submodelo').empty();
 
-    if ($("#sel_bus_modelo").val() == "0") {
+    if ($("#sel_bus_tipo").val() == "0") {
         $('#sel_bus_submodelo').append("<option value='0'>Seleccione</option>");
     } else {
-        fc_obtener_submodelo("bus_", "Div", "Todos", 0, $("#sel_bus_modelo").val());
+        fc_obtener_submodelo("bus_", "Div", "Todos", 0, $("#sel_bus_tipo").val());
     }
 });
 
-$("#sel_modelo").change(function () {
+$("#sel_tipo").change(function () {
     $('#sel_submodelo').empty();
 
-    if ($("#sel_modelo").val() == "0") {
+    if ($("#sel_tipo").val() == "0") {
         $('#sel_submodelo').append("<option value='0'>Seleccione</option>");
     } else {
-        fc_obtener_submodelo("", "Div", "Seleccione", 0, $("#sel_modelo").val());
+        fc_obtener_submodelo("", "Div", "Seleccione", 0, $("#sel_tipo").val());
     }
 });
 
@@ -194,8 +156,7 @@ $("#btn_buscar").click(function () {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         data: JSON.stringify({
-            placa: $("#txt_bus_placa").val(), modelo: $("#sel_bus_modelo").val(), submodelo: $("#sel_bus_submodelo").val(),
-            nuCliente: $("#txt_bus_nucliente").val(), noCliente: $("#txt_bus_nocliente").val()
+            placa: $("#txt_bus_numero").val(), modelo: $("#sel_bus_tipo").val()
         }),
         async: true,
         beforeSend: function () {
@@ -289,9 +250,9 @@ $("#btn_guardar").click(function () {
         $("#errorAuto").html(GenerarAlertaWarning("Intervalo: valor invalido"));
         $("#txt_intervalo").focus();
         return;
-    } else if ($("#sel_modelo").val() == "0") {
+    } else if ($("#sel_tipo").val() == "0") {
         $("#errorAuto").html(GenerarAlertaWarning("Modelo: seleccione una opción"));
-        $("#sel_modelo").focus();
+        $("#sel_tipo").focus();
         return;
     } else if ($("#txh_idcliente").val() == "0") {
         $("#errorAuto").html(GenerarAlertaWarning("Cliente: seleccione una opción"));
@@ -308,7 +269,7 @@ $("#btn_guardar").click(function () {
             nu_placa: $("#txt_placa").val(),
             nu_kilometraje: ($("#txt_kilometraje").val() == "" ? 0 : $("#txt_kilometraje").val()),
             nu_intervalo: ($("#txt_intervalo").val() == "" ? 0 : $("#txt_intervalo").val()),
-            nid_modelo_auto: $("#sel_modelo").val(),
+            nid_modelo_auto: $("#sel_tipo").val(),
             nid_submodelo_auto: $("#sel_submodelo").val(),
             nid_cliente: $("#txh_idcliente").val()
         }),

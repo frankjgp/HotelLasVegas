@@ -54,6 +54,10 @@ namespace DATOS
                         mItem.USUARIO.ID_USUARIO = dr.IsDBNull(dr.GetOrdinal("ID_USUARIO")) ? 0 : dr.GetInt32(dr.GetOrdinal("ID_USUARIO"));
                         mItem.USUARIO.DSC_USUARIO = dr.IsDBNull(dr.GetOrdinal("DSC_USUARIO")) ? string.Empty : dr.GetString(dr.GetOrdinal("DSC_USUARIO"));
                         mItem.USUARIO.ESTADO = dr.IsDBNull(dr.GetOrdinal("ESTADO_USUARIO")) ? 0 : dr.GetInt32(dr.GetOrdinal("ESTADO_USUARIO"));
+                        mItem.USUARIO.LOCAL_PERFIL = dr.IsDBNull(dr.GetOrdinal("LOCAL")) ? string.Empty : dr.GetString(dr.GetOrdinal("LOCAL"));
+
+                        mItem.USUARIO.PERFIL = new EPerfil();
+                        mItem.USUARIO.PERFIL.ID_PERFIL = dr.IsDBNull(dr.GetOrdinal("ID_PERFIL")) ? 0 : dr.GetInt32(dr.GetOrdinal("ID_PERFIL"));
 
                         lista.Add(mItem);
                     }
@@ -65,6 +69,8 @@ namespace DATOS
         public static int ActualizarUsuarios(EEmpleado objE)
         {
             int respFinal = 0;
+            if (objE.USUARIO == null) objE.USUARIO = new EUsuario();
+            if (objE.USUARIO.PERFIL == null) objE.USUARIO.PERFIL = new EPerfil();
 
             using (SqlConnection cn = new SqlConnection(DConexion.Get_Connection(DConexion.DataBase.CnLasVegas)))
             {

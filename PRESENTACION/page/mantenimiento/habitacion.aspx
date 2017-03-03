@@ -5,7 +5,7 @@
     <div class="col-lg-12">
         <section class="panel">
             <header class="panel-heading">
-                MANTENIMIENTO AUTO
+                MANTENIMIENTO HABITACION
             </header>
             <div class="panel-body">
                 <button id="btn_buscar" type="button" class="btn btn-info btn-sm">BUSCAR</button>
@@ -23,34 +23,14 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="form-group">
-                            Nro. Placa
-                            <input id="txt_bus_placa" class="form-control input-sm" type="text" />
+                            Número
+                            <input id="txt_bus_numero" class="form-control input-sm" type="text" />
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group">
-                            Modelo
-                            <select id="sel_bus_modelo" class="form-control input-sm"></select>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            Sub-Modelo
-                            <select id="sel_bus_submodelo" class="form-control input-sm"></select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            Nro. Cliente
-                            <input id="txt_bus_nucliente" class="form-control input-sm" type="text" />
-                        </div>
-                    </div>
-                    <div class="col-lg-8">
-                        <div class="form-group">
-                            Nombre Cliente
-                            <input id="txt_bus_nocliente" class="form-control input-sm" type="text" />
+                            Tipo Habitación
+                            <select id="sel_bus_tipo" class="form-control input-sm"></select>
                         </div>
                     </div>
                 </div>

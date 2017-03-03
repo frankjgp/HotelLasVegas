@@ -123,7 +123,7 @@
                             Estado
                             <select id="sel_estadousuario" class="form-control input-sm" disabled="disabled">
                                 <option value="1" selected>Activo</option>
-                                <option value="0">Desactivado</option>
+                                <option value="2">Desactivado</option>
                             </select>
                         </div>
                     </div>

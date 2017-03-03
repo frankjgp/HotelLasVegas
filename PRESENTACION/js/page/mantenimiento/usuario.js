@@ -58,7 +58,9 @@ $("#btn_nuevo").click(function () {
     $("#txh_idusuario").val('0');
     $("#pnl_empleado select").val('0');
     $("#pnl_empleado input:text").val('');
-    $('[name="rad_local"]').prop('checked', false);
+    $('[name="rad_local"]:checked').each(function (i, item) {
+        $(item).prop('checked', false);
+    });
     $('#chk_usuario').removeAttr("disabled");
     $('#chk_usuario').prop("checked", false);
     $('#txt_usuario').attr("disabled", "disabled");
@@ -123,58 +125,46 @@ $("#btn_buscar").click(function () {
                         success: function (data) {
                             $("#tbl_empleado button").removeAttr("disabled");
 
-                            if (data.d.error) {
-                                $("#errorDiv").html(GenerarAlertaError(data.d.error));
+                            if (!data.d.Activo) {
+                                $("#errorDiv").html(GenerarAlertaError(data.d.Mensaje));
                                 return;
                             }
 
-                            $("#txh_idempleado").val(data.d.co_trabajador);
-                            $("#txh_idusuario").val(data.d.beUsuario.co_usuario);
-                            $("#txt_dni").val(data.d.nu_dni.trim());
-                            $("#txt_natural").val(data.d.no_trabajador);
-                            $("#txt_appaterno").val(data.d.no_ap_paterno);
-                            $("#txt_apmaterno").val(data.d.no_ap_materno);
-                            $("#txt_fecnac").val(formatDate(parseDateServer(data.d.fe_nacimiento), "dd/MM/yyyy"));
-                            $("input:radio[value='" + data.d.co_sexo + "']").prop("checked", true);
-                            $("#sel_estadocivil").val(data.d.no_estado_civil);
-                            $("#sel_area").val(data.d.nid_area);
-                            $("#txt_sueldo").val(data.d.nid_tipo_trabajador);
-                            $("#txt_correo").val(data.d.no_correo);
-                            $("#txt_telefono").val(data.d.nu_telefono.trim());
-                            $("#txt_celular").val(data.d.nu_celular.trim());
-                            $("#txt_experiencia").val(data.d.tx_experiencia_laboral);
-                            $("#sel_departamento").val(data.d.coddpto);
-                            $("#txt_direccion").val(data.d.tx_dir_domicilio);
-                            $("#sel_corporacion").val(data.d.nid_corporacion);
-                            $("#sel_estadotrabajador").val(data.d.fl_activo);
+                            $("#txh_idempleado").val(data.d.Resultado.ID_EMPLEADO);
+                            $("#txh_idusuario").val(data.d.Resultado.USUARIO.ID_USUARIO);
+                            $("#txt_nombre").val(data.d.Resultado.NOMBRES);
+                            $("#txt_apellido").val(data.d.Resultado.APELLIDOS);
+                            $("#txt_cargo").val(data.d.Resultado.CARGO);
+                            $("#txt_sueldo").val(data.d.Resultado.SUELDO);
 
-                            fc_obtener_cargo("", "Trabajador", "Seleccione", data.d.nid_cargo, data.d.nid_area);
-                            fc_obtener_provincia("Seleccione", data.d.codprov, data.d.coddpto);
-                            fc_obtener_distrito("Seleccione", data.d.coddist, data.d.coddpto, data.d.codprov);
-
-                            if (data.d.beUsuario.no_usuario != "") {
+                            if (data.d.Resultado.USUARIO.ID_USUARIO != 0) {
                                 $('#chk_usuario').attr("disabled", "disabled");
                                 $('#chk_usuario').prop("checked", true);
                                 $('#txt_usuario').removeAttr("disabled");
                                 $("#sel_perfil").removeAttr("disabled");
                                 $('#sel_estadousuario').removeAttr("disabled");
-                                $('#chk_anular').removeAttr("disabled");
-                                $('#txt_bloqueo').removeAttr("disabled");
+                                $('[name="rad_local"]').removeAttr("disabled");
                             } else {
                                 $('#chk_usuario').removeAttr("disabled");
                                 $('#chk_usuario').prop("checked", false);
                                 $('#txt_usuario').attr("disabled", "disabled");
                                 $("#sel_perfil").attr("disabled", "disabled");
                                 $('#sel_estadousuario').attr("disabled", "disabled");
-                                $('#chk_anular').attr("disabled", "disabled");
-                                $('#txt_bloqueo').attr("disabled", "disabled");
+                                $('[name="rad_local"]').attr("disabled", "disabled");
+
                             }
 
-                            $("#txt_usuario").val(data.d.beUsuario.no_usuario);
-                            $("#sel_perfil").val(data.d.beUsuario.nid_perfil);
-                            $("#sel_estadousuario").val(data.d.beUsuario.fl_activo);
-                            $('#chk_anular').prop("checked", data.d.beUsuario.fl_anular);
-                            $("#txt_bloqueo").val(data.d.beUsuario.tx_bloqueo);
+                            $("#txt_usuario").val(data.d.Resultado.USUARIO.DSC_USUARIO);
+                            $("#sel_perfil").val(data.d.Resultado.USUARIO.PERFIL.ID_PERFIL);
+                            $("#sel_estadousuario").val(data.d.Resultado.USUARIO.ESTADO);
+
+                            $('[name="rad_local"]:checked').each(function (i, item) {
+                                $(item).prop('checked', false);
+                            });
+                            var local = data.d.Resultado.USUARIO.LOCAL_PERFIL.split(',');
+                            for (var x = 0; x < local.length ; x++) {
+                                $('[name="rad_local"][value="' + local[x] + '"]').prop('checked', true);
+                            }
 
                             $("#pnl_empleado").modal('show');
                         },
@@ -185,13 +175,13 @@ $("#btn_buscar").click(function () {
                     });
                     event.preventDefault();
                 } else if ($(this).attr("name") == "anular") {
-                    if (confirm("¿Esta seguro de anular trabajador?")) {
+                    if (confirm("¿Esta seguro de anular empleado?")) {
                         $.ajax({
                             type: "POST",
                             url: "page/mantenimiento/usuario.aspx/AnularEmpleadoWM",
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
-                            data: JSON.stringify({ coTrabajador: $(this).parent().parent().find("td").eq(2).html() }),
+                            data: JSON.stringify({ idEmpleado: $(this).parent().parent().find("td").eq(0).html() }),
                             async: true,
                             beforeSend: function () {
                                 $("#tbl_empleado button").attr("disabled", true);
@@ -199,12 +189,12 @@ $("#btn_buscar").click(function () {
                             success: function (data) {
                                 $("#tbl_empleado button").removeAttr("disabled");
 
-                                if (data.d.error) {
-                                    $("#errorDiv").html(GenerarAlertaError(data.d.error));
+                                if (!data.d.Activo) {
+                                    $("#errorDiv").html(GenerarAlertaError(data.d.Mensaje));
                                     return;
                                 }
 
-                                $("#errorDiv").html(GenerarAlertaSuccess(data.d.success));
+                                $("#errorDiv").html(GenerarAlertaSuccess(data.d.Mensaje));
                                 $("#btn_buscar").click();
                             },
                             error: function (data) {
@@ -214,142 +204,6 @@ $("#btn_buscar").click(function () {
                         });
                         event.preventDefault();
                     }
-                } else if ($(this).attr("name") == "acceso" && $(this).attr("title") == 'Clave') {
-                    if (confirm("¿Esta seguro de resetear clave?")) {
-                        $.ajax({
-                            type: "POST",
-                            url: "page/mantenimiento/usuario.aspx/ResetearClaveWM",
-                            contentType: "application/json; charset=utf-8",
-                            dataType: "json",
-                            data: JSON.stringify({
-                                coTrabajador: $(this).parent().parent().find("td").eq(2).html(),
-                                corporacion: $(this).parent().parent().find("td").eq(0).html()
-                            }),
-                            async: true,
-                            beforeSend: function () {
-                                $("#tbl_empleado button").attr("disabled", true);
-                            },
-                            success: function (data) {
-                                $("#tbl_empleado button").removeAttr("disabled");
-
-                                if (data.d.error) {
-                                    $("#errorDiv").html(GenerarAlertaError(data.d.error));
-                                    return;
-                                }
-
-                                $("#errorDiv").html(GenerarAlertaSuccess(data.d.success));
-                                $("#btn_buscar").click();
-                            },
-                            error: function (data) {
-                                $("#errorDiv").html(GenerarAlertaError("Inconveniente en la operación"));
-                                $("#tbl_empleado button").removeAttr("disabled");
-                            }
-                        });
-                        event.preventDefault();
-                    }
-                } else if ($(this).attr("name") == "acceso") {
-                    $('#pnl_acceso .modal-title').html('Acceso ' + $(this).attr("title"));
-
-                    $.ajax({
-                        type: "POST",
-                        url: "page/mantenimiento/usuario.aspx/ObtenerTrabajadorAccesoWM",
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        data: JSON.stringify({
-                            coTrabajador: $(this).parent().parent().find("td").eq(2).html(),
-                            corporacion: $(this).parent().parent().find("td").eq(0).html(),
-                            acceso: $(this).attr("title")
-                        }),
-                        async: true,
-                        beforeSend: function () {
-                            $("#tbl_acceso tbody").empty();
-                            $("#tbl_empleado button").attr("disabled", true);
-                        },
-                        success: function (data) {
-                            $("#tbl_empleado button").removeAttr("disabled");
-
-                            if (data.d.error) {
-                                $("#errorDiv").html(GenerarAlertaError(data.d.error));
-                                return;
-                            }
-
-                            var htmlAcceso = '';
-                            if (data.d.acceso == "Empresa") {
-                                for (var i = 0; i < data.d.lista.length; i++) {
-                                    htmlAcceso += '<tr><td><label class="label_check" for="chk_empresa' + data.d.lista[i].nid_empresa + '">';
-                                    htmlAcceso += '<input style="width: 20px" id="chk_empresa' + data.d.lista[i].nid_empresa + '"';
-                                    htmlAcceso += 'value="' + data.d.lista[i].nid_empresa + '" type="checkbox" />';
-                                    htmlAcceso += data.d.lista[i].no_comercial + '</label></td></tr>';
-                                }
-                            } else if (data.d.acceso == "Almacen") {
-                                for (var i = 0; i < data.d.lista.length; i++) {
-                                    htmlAcceso += '<tr><td><label class="label_check" for="chk_almacen' + data.d.lista[i].nid_almacen + '">';
-                                    htmlAcceso += '<input style="width: 20px" id="chk_almacen' + data.d.lista[i].nid_almacen + '"';
-                                    htmlAcceso += 'value="' + data.d.lista[i].nid_almacen + '" type="checkbox" />';
-                                    htmlAcceso += data.d.lista[i].no_almacen + '</label></td></tr>';
-                                }
-                            } else if (data.d.acceso == "Local") {
-                                for (var i = 0; i < data.d.lista.length; i++) {
-                                    htmlAcceso += '<tr><td><label class="label_check" for="chk_local' + data.d.lista[i].nid_local + '">';
-                                    htmlAcceso += '<input style="width: 20px" id="chk_local' + data.d.lista[i].nid_local + '"';
-                                    htmlAcceso += 'value="' + data.d.lista[i].nid_local + '" type="checkbox" />';
-                                    htmlAcceso += data.d.lista[i].no_local + '</label></td></tr>';
-                                }
-                            } else if (data.d.acceso == "Menu") {
-                                var menu = 0;
-                                for (var i = 0; i < data.d.listaMenu.length; i++) {
-                                    if (data.d.listaMenu[i].nid_menu != menu) {
-                                        if (htmlAcceso != '' & data.d.listaMenu.length != (i + 1)) htmlAcceso += '</div></td></tr>';
-
-                                        menu = data.d.listaMenu[i].nid_menu;
-                                        htmlAcceso += '<tr><td><div class="control-label menuDetalle"><strong>' + data.d.listaMenu[i].no_menu + '</strong></div><div class="form-group" style="display:none">';
-                                    }
-
-                                    htmlAcceso += '<div class="checkbox"><label><input type="checkbox" value="';
-                                    htmlAcceso += data.d.listaMenu[i].nid_menu + '~' + data.d.listaMenu[i].nid_opcion + '"/> ';
-                                    htmlAcceso += data.d.listaMenu[i].no_opcion + '</label></div>';
-
-                                    if (data.d.listaMenu.length == (i + 1)) {
-                                        htmlAcceso += '</div></td></tr>';
-                                        break;
-                                    }
-                                }
-                            }
-
-                            $("#tbl_acceso tbody").append(htmlAcceso);
-                            $("#txh_idusuario").val(data.d.usuario.co_usuario);
-                            $("#txh_acceso").val(data.d.acceso);
-
-                            var listaActual = $("#tbl_acceso").find("input");
-                            var accesoActual;
-
-                            if (data.d.acceso == "Menu") {
-                                $(".menuDetalle").click(function () {
-                                    $(this).parent().find(".form-group").css("display", $(this).parent().find(".form-group").css("display") == "none" ? "" : "none");
-                                });
-
-                                accesoActual = data.d.lista;
-                            } else {
-                                accesoActual = (data.d.acceso == "Empresa" ? data.d.usuario.co_empresa : (data.d.acceso == "Almacen" ? data.d.usuario.co_almacen : data.d.usuario.co_local)).toString().split(",");
-                            }
-
-                            for (var i = 0; i < accesoActual.length; i++) {
-                                for (var x = 0; x < listaActual.length; x++) {
-                                    if (listaActual.eq(x).val() == accesoActual[i]) {
-                                        listaActual.eq(x).prop("checked", true);
-                                        break;
-                                    }
-                                }
-                            }
-
-                            $("#pnl_acceso").modal('show');
-                        },
-                        error: function (data) {
-                            $("#errorDiv").html(GenerarAlertaError("Inconveniente en la operación"));
-                            $("#tbl_empleado button").removeAttr("disabled");
-                        }
-                    });
-                    event.preventDefault();
                 }
             });
         },
@@ -469,61 +323,6 @@ $("#btn_guardar").click(function () {
         error: function (data) {
             $("#errorEmpleado").html(GenerarAlertaError("Inconveniente en la operación"));
             $("#btn_guardar").removeAttr("disabled");
-        }
-    });
-    event.preventDefault();
-});
-
-$("#btn_acceso_guardar").click(function () {
-    $("#errorAcceso").html('');
-
-    var ls_acceso = "";
-    var listaActual = $("#tbl_acceso").find("input");
-
-    if ($("#txh_acceso").val() == "Menu") {
-        for (var i = 0; i < listaActual.length; i++) {
-            ls_acceso += listaActual.eq(i).val() + "~" + (listaActual.eq(i).is(":checked") ? "0" : "1") + "|";
-        }
-    } else {
-        for (var i = 0; i < listaActual.length; i++) {
-            if (listaActual.eq(i).is(":checked")) {
-                ls_acceso += listaActual.eq(i).val() + ",";
-            }
-        }
-    }
-
-    if (ls_acceso != '') {
-        ls_acceso = ls_acceso.substr(0, ls_acceso.length - 1);
-    }
-
-    $.ajax({
-        type: "POST",
-        url: "page/mantenimiento/usuario.aspx/GuardarTrabajadorAccesoWM",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        data: JSON.stringify({
-            acceso: $("#txh_acceso").val(),
-            co_usuario: $("#txh_idusuario").val(),
-            ls_acceso: ls_acceso
-        }),
-        async: true,
-        beforeSend: function () {
-            $("#btn_acceso_guardar").attr("disabled", true);
-        },
-        success: function (data) {
-            $("#btn_acceso_guardar").removeAttr("disabled");
-
-            if (data.d.error) {
-                $("#errorAcceso").html(GenerarAlertaError(data.d.error));
-                return;
-            }
-
-            $("#errorDiv").html(GenerarAlertaSuccess(data.d.success));
-            $("#pnl_acceso").modal('hide');
-        },
-        error: function (data) {
-            $("#errorAcceso").html(GenerarAlertaError("Inconveniente en la operación"));
-            $("#btn_acceso_guardar").removeAttr("disabled");
         }
     });
     event.preventDefault();
