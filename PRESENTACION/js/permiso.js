@@ -6,8 +6,6 @@
         dataType: "json",
         async: true,
         beforeSend: function () {
-            $('#empresa').empty();
-            $('#almacen').empty();
             $('#local').empty();
             $("#frmPermiso :input").attr("disabled", true);
         },
@@ -15,14 +13,6 @@
             if (data.d.error) {
                 $("#msg").html(GenerarAlertaError(data.d.error));
                 return;
-            }
-
-            for (var i = 0; i < data.d.listaEmpresa.length; i++) {
-                $('#empresa').append("<option value='" + data.d.listaEmpresa[i].nid_empresa + "'>" + data.d.listaEmpresa[i].no_comercial + "</option>");
-            }
-
-            for (var i = 0; i < data.d.listaAlmacen.length; i++) {
-                $('#almacen').append("<option value='" + data.d.listaAlmacen[i].nid_almacen + "'>" + data.d.listaAlmacen[i].no_almacen + "</option>");
             }
 
             for (var i = 0; i < data.d.listaLocal.length; i++) {

@@ -30,13 +30,13 @@ namespace PRESENTACION
                 EUsuario eSession = (EUsuario)HttpContext.Current.Session["UserData"];
 
                 objRespuesta.Resultado = NUsuario.PermisoLocal(eSession.ID_USUARIO);
-
-                return new { listaLocal = new List<string>() };
             }
             catch (Exception ex)
             {
                 objRespuesta.Error(string.IsNullOrEmpty(ex.Message) ? ex.InnerException.Message : ex.Message);
             }
+
+            return objRespuesta.Resultado;
         }
 
         [WebMethod()]

@@ -11,7 +11,7 @@ namespace ENTIDAD
         public bool Activo { get; set; }
         public string TipoMensaje { get; set; }
         public string Mensaje { get; set; }
-        public ICollection<T> Resultado { get; set; }
+        public dynamic Resultado { get; set; }
 
         public void Success(string mensaje)
         {
