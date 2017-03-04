@@ -22,7 +22,19 @@ namespace ENTIDAD
         public int ID_MEDIO_PAGO { get; set; }
         public string MEDIO_PAGO { get; set; }
         public string OBSERVACION { get; set; }
+        public int USU_REG { get; set; }
         public int ID_LOCAL { get; set; }
+        public int ESTADO { get; set; }
+        public int OPCION { get; set; }
+
+        #region EXTRA
+        public string NUM_CLIENTE { get; set; }
+        public string NOM_CLIENTE { get; set; }
+        public string NUM_HABITACION { get; set; }
+        public int ID_TIPO_HABITACION { get; set; }
+        public string TIPO_HABITACION { get; set; }
+        public string DSC_ESTADO { get; set; }
+        #endregion
 
     }
 }

@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="DCliente.cs" />
     <Compile Include="DConexion.cs" />
+    <Compile Include="DReserva.cs" />
     <Compile Include="DHabitacion.cs" />
     <Compile Include="DMovimiento.cs" />
     <Compile Include="DUsuario.cs" />

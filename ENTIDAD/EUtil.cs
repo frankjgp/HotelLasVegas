@@ -97,5 +97,10 @@ namespace ENTIDAD
             //se regresa en forma de cadena
             return UTF8Encoding.UTF8.GetString(resultArray);
         }
+
+        public static DateTime getFechaValida(DateTime fecha)
+        {
+            return (fecha <= new DateTime(1900, 12, 31) ? new DateTime(1900, 1, 1) : fecha);
+        }
     }
 }

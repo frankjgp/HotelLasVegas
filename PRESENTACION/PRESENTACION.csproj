@@ -202,6 +202,7 @@
     <Content Include="js\page\operacion\alerta.js" />
     <Content Include="js\page\operacion\movimiento.js" />
     <Content Include="js\page\operacion\atencion.js" />
+    <Content Include="js\page\operacion\reserva.js" />
     <Content Include="js\page\reporte\reporte.js" />
     <Content Include="js\permiso.js" />
     <Content Include="login.aspx" />
@@ -211,6 +212,7 @@
     <Content Include="page\operacion\alerta.aspx" />
     <Content Include="page\operacion\movimiento.aspx" />
     <Content Include="page\operacion\atencion.aspx" />
+    <Content Include="page\operacion\reserva.aspx" />
     <Content Include="page\reporte\movimiento.aspx" />
     <Content Include="permiso.aspx" />
     <Content Include="Web.config" />
@@ -286,6 +288,13 @@
     <Compile Include="page\operacion\atencion.aspx.designer.cs">
       <DependentUpon>atencion.aspx</DependentUpon>
     </Compile>
+    <Compile Include="page\operacion\reserva.aspx.cs">
+      <DependentUpon>reserva.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="page\operacion\reserva.aspx.designer.cs">
+      <DependentUpon>reserva.aspx</DependentUpon>
+    </Compile>
     <Compile Include="page\reporte\movimiento.aspx.cs">
       <DependentUpon>movimiento.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -312,6 +321,7 @@
       <Name>NEGOCIOS</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

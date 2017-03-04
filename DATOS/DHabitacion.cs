@@ -103,5 +103,43 @@ namespace DATOS
             }
             return lista;
         }
+
+        public static List<EHabitacion> DisponibilidadHabitacion(EHabitacion objE)
+        {
+            if (objE.TIPOHABITACION == null) objE.TIPOHABITACION = new ETipoHabitacion();
+
+            List<EHabitacion> lista = new List<EHabitacion>();
+
+            using (SqlConnection cn = new SqlConnection(DConexion.Get_Connection(DConexion.DataBase.CnLasVegas)))
+            {
+                SqlCommand cmd = new SqlCommand("USP_DISPONIBILIDAD_HABITACION", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@ID_LOCAL", SqlDbType.Int).Value = objE.ID_LOCAL;
+                cmd.Parameters.Add("@FECHA_INICIO", SqlDbType.Date).Value = objE.FECHA_INICIO;
+                cmd.Parameters.Add("@FECHA_FIN", SqlDbType.Date).Value = objE.FECHA_FIN;
+                cmd.Parameters.Add("@ID_TIPO_HABITACION", SqlDbType.Int).Value = objE.TIPOHABITACION.ID_TIPO_HABITACION;
+
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    while (dr.Read())
+                    {
+                        EHabitacion mItem = new EHabitacion();
+                        mItem.ID_HABITACION = dr.IsDBNull(dr.GetOrdinal("ID_HABITACION")) ? 0 : dr.GetInt32(dr.GetOrdinal("ID_HABITACION"));
+                        mItem.ID_LOCAL = dr.IsDBNull(dr.GetOrdinal("ID_LOCAL")) ? 0 : dr.GetInt32(dr.GetOrdinal("ID_LOCAL"));
+                        mItem.NUMERO = dr.IsDBNull(dr.GetOrdinal("NUMERO")) ? string.Empty : dr.GetString(dr.GetOrdinal("NUMERO"));
+                        mItem.TIPOHABITACION = new ETipoHabitacion();
+                        mItem.TIPOHABITACION.ID_TIPO_HABITACION = dr.IsDBNull(dr.GetOrdinal("ID_TIPO_HABITACION")) ? 0 : dr.GetInt32(dr.GetOrdinal("ID_TIPO_HABITACION"));
+                        mItem.TIPOHABITACION.DESCRIPCION = dr.IsDBNull(dr.GetOrdinal("DESCRIPCION")) ? string.Empty : dr.GetString(dr.GetOrdinal("DESCRIPCION"));
+                        mItem.PRECIO = dr.IsDBNull(dr.GetOrdinal("PRECIO")) ? 0 : dr.GetDecimal(dr.GetOrdinal("PRECIO"));
+                        mItem.DSC_ESTADO = dr.IsDBNull(dr.GetOrdinal("DSC_ESTADO")) ? string.Empty : dr.GetString(dr.GetOrdinal("DSC_ESTADO"));
+
+                        lista.Add(mItem);
+                    }
+                }
+            }
+            return lista;
+        }
     }
 }

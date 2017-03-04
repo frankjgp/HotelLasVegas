@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NCliente.cs" />
+    <Compile Include="NReserva.cs" />
     <Compile Include="NHabitacion.cs" />
     <Compile Include="NMovimiento.cs" />
     <Compile Include="NUsuario.cs" />
