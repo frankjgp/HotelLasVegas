@@ -82,12 +82,12 @@ namespace DATOS
                 SqlCommand cmd = new SqlCommand("USP_MANTENIMIENTO_CLIENTE", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("@ID_CLIENTE", SqlDbType.Int).Value = objE.ID_CLIENTE;
-                cmd.Parameters.Add("@NOMBRES", SqlDbType.VarChar).Value = objE.ID_CLIENTE;
-                cmd.Parameters.Add("@APELLIDOS", SqlDbType.VarChar).Value = objE.ID_CLIENTE;
-                cmd.Parameters.Add("@ID_TIPO_DOCUMENTO", SqlDbType.Int).Value = objE.ID_CLIENTE;
-                cmd.Parameters.Add("@NUM_DOCUMENTO", SqlDbType.VarChar).Value = objE.ID_CLIENTE;
-                cmd.Parameters.Add("@TELEFONOS", SqlDbType.VarChar).Value = objE.ID_CLIENTE;
-                cmd.Parameters.Add("@USU_MOD", SqlDbType.Int).Value = objE.ID_CLIENTE;
+                cmd.Parameters.Add("@NOMBRES", SqlDbType.VarChar).Value = objE.NOMBRES;
+                cmd.Parameters.Add("@APELLIDOS", SqlDbType.VarChar).Value = objE.APELLIDOS;
+                cmd.Parameters.Add("@ID_TIPO_DOCUMENTO", SqlDbType.Int).Value = objE.ID_TIPO_DOCUMENTO;
+                cmd.Parameters.Add("@NUM_DOCUMENTO", SqlDbType.VarChar).Value = objE.NUM_DOCUMENTO;
+                cmd.Parameters.Add("@TELEFONOS", SqlDbType.VarChar).Value = objE.TELEFONOS;
+                cmd.Parameters.Add("@USU_MOD", SqlDbType.Int).Value = objE.USU_MOD;
                 cmd.Parameters.Add("@OPCION", SqlDbType.Int).Value = objE.OPCION;
 
                 cn.Open();
