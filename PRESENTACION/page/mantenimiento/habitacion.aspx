@@ -34,15 +34,15 @@
                         </div>
                     </div>
                 </div>
-                <table id="tbl_auto" class="table table-striped table-hover table-padding-2">
+                <table id="tbl_habitacion" class="table table-striped table-hover table-padding-2">
                     <thead>
                         <tr>
-                            <th style="display:none"></th>
+                            <th style="display: none"></th>
                             <th></th>
-                            <th>Nro. Placa</th>
-                            <th>Modelo</th>
-                            <th>Kilometraje</th>
-                            <th>Cliente</th>
+                            <th>Nro.</th>
+                            <th>Tipo</th>
+                            <th>Precio</th>
+                            <th>Estado</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,132 +53,52 @@
     </div>
 </div>
 
-<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="pnl_auto" class="modal fade">
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="pnl_habitacion" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                <h4 class="modal-title">Registro Auto</h4>
+                <h4 class="modal-title">Registro Habitación</h4>
             </div>
             <div class="modal-body">
-                <div id="errorAuto"></div>
-                <input id="txh_idauto" type="hidden" />
-                <input id="txh_idcliente" type="hidden" />
+                <div id="errorHabitacion"></div>
+                <input id="txh_idhabitacion" type="hidden" />
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="form-group">
-                            Nro. Placa
-                            <input id="txt_placa" class="form-control input-sm" type="text" />
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            Kilometraje
-                            <input id="txt_kilometraje" class="form-control input-sm" type="text" />
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            Intervalo
-                            <div class="input-group">
-                                <input id="txt_intervalo" class="form-control input-sm" type="text" />
-                                <span class="input-group-addon">Dia(s)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            Modelo
-                            <select id="sel_modelo" class="form-control input-sm"></select>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            Sub-Modelo
-                            <select id="sel_submodelo" class="form-control input-sm"></select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            Nro. Cliente
-                            <div class="input-group">
-                                <input id="txt_nucliente" class="form-control input-sm" type="text" disabled="disabled" />
-                                <span class="input-group-btn"><button id="btn_buscar_cliente" class="btn btn-info btn-sm" type="button"><i class="icon-search"></i></button></span>
-                            </div>
+                            Número
+                            <input id="txt_numero" class="form-control input-sm" type="text" />
                         </div>
                     </div>
                     <div class="col-lg-8">
                         <div class="form-group">
-                            Nombre Cliente
-                            <input id="txt_nocliente" class="form-control input-sm" type="text" disabled="disabled" />
+                            Modelo
+                            <select id="sel_tipo" class="form-control input-sm"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            Precio
+                            <div class="input-group">
+                                <span class="input-group-addon">S/</span>
+                                <input id="txt_precio" class="form-control input-sm" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            Estado
+                            <select id="sel_estado" class="form-control input-sm">
+                                <option value="0">Seleccione</option>
+                                <option value="1">Activo</option>
+                                <option value="2">Mantenimiento</option>
+                            </select>
                         </div>
                     </div>
                 </div>
                 <button id="btn_guardar" type="button" class="btn btn-primary">GUARDAR</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="pnl_busquedacliente" aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                <h4 class="modal-title">Busqueda de Clientes</h4>
-            </div>
-            <div class="modal-body">
-                <div id="errorBusquedaCliente"></div>
-                <div class="panel">
-                    <button id="btn_bcli_buscar" type="button" class="btn btn-info btn-xs">BUSCAR</button>
-                </div>
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="form-group">
-                            Tipo de Persona
-                            <select id="sel_bcli_tipopersona" class="form-control input-sm">
-                                <option value="0">Todos</option>
-                                <option value="J">Juridico</option>
-                                <option value="N">Natural</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="form-group">
-                            N° Documento
-                            <input id="txt_bcli_nrodoc" class="form-control input-sm" type="text" />
-                        </div>
-                    </div>
-                    <div id="pnl_bcli_juridico" class="col-lg-6">
-                        <div class="form-group">
-                            Razon Social
-                            <input id="txt_bcli_razonsocial" class="form-control input-sm" type="text" />
-                        </div>
-                    </div>
-                    <div id="pnl_bcli_natural" class="col-lg-6">
-                        <div class="form-group">
-                            Nombres
-                            <input id="txt_bcli_nombre" class="form-control input-sm" type="text" />
-                        </div>
-                    </div>
-                </div>
-                <table id="tbl_busquedacliente" class="table table-striped table-hover table-padding-2">
-                    <thead>
-                        <tr>
-                            <th style="display:none"></th>
-                            <th></th>
-                            <th>Dcto.</th>
-                            <th>Numero</th>
-                            <th>Nombre/Razon Social</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>

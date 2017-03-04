@@ -290,6 +290,7 @@ $("#btn_guardar").click(function () {
         USUARIO: {
             ID_USUARIO: $("#txh_idusuario").val() == "" ? 0 : $("#txh_idusuario").val(),
             DSC_USUARIO: $("#txt_usuario").val(),
+            ESTADO: $("#sel_estadousuario").val(),
             PERFIL: {
                 ID_PERFIL: $("#sel_perfil").val()
             },

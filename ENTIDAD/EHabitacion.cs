@@ -10,9 +10,12 @@ namespace ENTIDAD
     {
         public int ID_HABITACION { get; set; }
         public string NUMERO { get; set; }
-        public int ID_TIPO_HABITACION { get; set; }
+        public ETipoHabitacion TIPOHABITACION { get; set; }
         public decimal PRECIO { get; set; }
         public int ID_LOCAL { get; set; }
-        public string DESCRIPCION { get; set; }
+        public int ESTADO { get; set; }
+        public string DSC_ESTADO { get; set; }
+        public int USU_REG { get; set; }
+        public int OPCION { get; set; }
     }
 }

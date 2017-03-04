@@ -12,20 +12,19 @@ $(function () {
         async: true,
         beforeSend: function () {
             $('#sel_bus_tipo').empty();
-            $('#sel_bus_submodelo').empty();
             $('#sel_tipo').empty();
         },
         success: function (data) {
-            if (data.d.error) {
-                $("#errorDiv").html(GenerarAlertaError(data.d.error));
+            if (!data.d.Activo) {
+                $("#errorDiv").html(GenerarAlertaError(data.d.Mensaje));
                 return;
             }
 
             $('#sel_bus_tipo').append("<option value='0'>Todos</option>");
             $('#sel_tipo').append("<option value='0'>Seleccione</option>");
-            for (var i = 0; i < data.d.length; i++) {
-                $('#sel_bus_tipo').append("<option value='" + data.d[i].nid_modelo_auto + "'>" + data.d[i].no_modelo_auto + "</option>");
-                $('#sel_tipo').append("<option value='" + data.d[i].nid_modelo_auto + "'>" + data.d[i].no_modelo_auto + "</option>");
+            for (var i = 0; i < data.d.Resultado.length; i++) {
+                $('#sel_bus_tipo').append("<option value='" + data.d.Resultado[i].ID_TIPO_HABITACION + "'>" + data.d.Resultado[i].DESCRIPCION + "</option>");
+                $('#sel_tipo').append("<option value='" + data.d.Resultado[i].ID_TIPO_HABITACION + "'>" + data.d.Resultado[i].DESCRIPCION + "</option>");
             }
         },
         error: function (data) {
@@ -35,45 +34,39 @@ $(function () {
 });
 
 /*Eventos definidos*/
-function fc_editar_auto(idAuto) {
-    $('#pnl_auto .modal-title').html('Editar Auto');
+function fc_editar_habitacion(idHabitacion) {
+    $('#pnl_habitacion .modal-title').html('Editar Habitación');
 
     $.ajax({
         type: "POST",
-        url: "page/mantenimiento/habitacion.aspx/ObtenerAutoWM",
+        url: "page/mantenimiento/habitacion.aspx/ObtenerHabitacionWM",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        data: JSON.stringify({ idAuto: idAuto }),
+        data: JSON.stringify({ idHabitacion: idHabitacion }),
         async: true,
         beforeSend: function () {
-            $("#errorAuto").html('');
-            $("#tbl_auto button").attr("disabled", true);
+            $("#errorHabitacion").html('');
+            $("#tbl_habitacion button").attr("disabled", true);
         },
         success: function (data) {
-            $("#tbl_auto button").removeAttr("disabled");
+            $("#tbl_habitacion button").removeAttr("disabled");
 
-            if (data.d.error) {
-                $("#errorDiv").html(GenerarAlertaError(data.d.error));
+            if (!data.d.Activo) {
+                $("#errorDiv").html(GenerarAlertaError(data.d.Mensaje));
                 return;
             }
 
-            $("#txh_idauto").val(data.d.nid_auto);
-            $("#txt_placa").val(data.d.nu_placa.trim());
-            $("#txt_kilometraje").val(data.d.nu_kilometraje);
-            $("#txt_intervalo").val(data.d.nu_intervalo);
-            $("#sel_tipo").val(data.d.nid_modelo_auto);
-            $("#txh_idcliente").val(data.d.nid_cliente);
-            $("#txt_nucliente").val(data.d.nu_cliente);
-            $("#txt_nocliente").val(data.d.no_cliente);
+            $("#txh_idhabitacion").val(data.d.Resultado.ID_HABITACION);
+            $("#txt_numero").val(data.d.Resultado.NUMERO);
+            $("#txt_precio").val(data.d.Resultado.PRECIO);
+            $("#sel_tipo").val(data.d.Resultado.TIPOHABITACION.ID_TIPO_HABITACION);
+            $("#sel_estado").val(data.d.Resultado.ESTADO);
 
-            $("#sel_submodelo").empty();
-            fc_obtener_submodelo("", "Auto", "Seleccione", data.d.nid_submodelo_auto, data.d.nid_modelo_auto);
-
-            $("#pnl_auto").modal('show');
+            $("#pnl_habitacion").modal('show');
         },
         error: function (data) {
             $("#errorDiv").html(GenerarAlertaError("Inconveniente en la operación"));
-            $("#tbl_auto button").removeAttr("disabled");
+            $("#tbl_habitacion button").removeAttr("disabled");
         }
     });
 }
@@ -97,7 +90,7 @@ $(document).keydown(function (evt) {
             break;
         case 71: //GUARDAR
             if (evt ? evt.altKey : event.altKey) {
-                if ($("#pnl_auto").css('display') == 'block') {
+                if ($("#pnl_habitacion").css('display') == 'block') {
                     $("#btn_guardar").click();
                 }
             }
@@ -113,34 +106,18 @@ $("#btn_limpiar").click(function () {
 });
 
 $("#btn_nuevo").click(function () {
-    $("#errorAuto").html('');
-    $('#pnl_auto .modal-title').html('Registrar Auto');
-    $("#txh_idauto").val('0');
-    $("#txh_idcliente").val('0');
-    $("#pnl_auto select").val('0');
-    $("#pnl_auto input:text").val('');
-    $("#pnl_auto").modal('show');
-    setTimeout('$("#txt_placa").focus()', 1000);
+    $("#errorDiv").html('');
+    $("#errorHabitacion").html('');
+    $('#pnl_habitacion .modal-title').html('Registrar Habitación');
+    $("#txh_idhabitacion").val('0');
+    $("#pnl_habitacion select").val('0');
+    $("#pnl_habitacion input:text").val('');
+    $("#pnl_habitacion").modal('show');
+    setTimeout('$("#txt_numero").focus()', 1000);
 });
 
 $("#sel_bus_tipo").change(function () {
-    $('#sel_bus_submodelo').empty();
-
-    if ($("#sel_bus_tipo").val() == "0") {
-        $('#sel_bus_submodelo').append("<option value='0'>Seleccione</option>");
-    } else {
-        fc_obtener_submodelo("bus_", "Div", "Todos", 0, $("#sel_bus_tipo").val());
-    }
-});
-
-$("#sel_tipo").change(function () {
-    $('#sel_submodelo').empty();
-
-    if ($("#sel_tipo").val() == "0") {
-        $('#sel_submodelo').append("<option value='0'>Seleccione</option>");
-    } else {
-        fc_obtener_submodelo("", "Div", "Seleccione", 0, $("#sel_tipo").val());
-    }
+    $("#btn_buscar").click();
 });
 
 $("#pnl_busqueda input:text").keyup(function (e) {
@@ -152,70 +129,69 @@ $("#pnl_busqueda input:text").keyup(function (e) {
 $("#btn_buscar").click(function () {
     $.ajax({
         type: "POST",
-        url: "page/mantenimiento/habitacion.aspx/BuscarAutoWM",
+        url: "page/mantenimiento/habitacion.aspx/BuscarHabitacionWM",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         data: JSON.stringify({
-            placa: $("#txt_bus_numero").val(), modelo: $("#sel_bus_tipo").val()
+            numero: $("#txt_bus_numero").val(), idTipo: $("#sel_bus_tipo").val()
         }),
         async: true,
         beforeSend: function () {
-            $("#errorDiv").html('');
             $("#btn_buscar").attr("disabled", true);
         },
         success: function (data) {
             $("#btn_buscar").removeAttr("disabled");
 
-            if (data.d.error) {
-                $("#errorDiv").html(GenerarAlertaError(data.d.error));
+            if (!data.d.Activo) {
+                $("#errorDiv").html(GenerarAlertaError(data.d.Mensaje));
                 return;
             }
 
-            $('#tbl_auto tbody').empty();
+            $('#tbl_habitacion tbody').empty();
 
             var htmlBotones = '<td><button name="editar" class="btn btn-primary btn-xs"><i class="icon-pencil"></i></button>' +
                                 '<button name="anular" class="btn btn-danger btn-xs"><i class="icon-trash "></i></button></td>';
             var html = '';
-            for (var i = 0; i < data.d.length; i++) {
-                html += '<tr><td style="display:none">' + data.d[i].nid_auto + '</td>' + htmlBotones;
-                html += '<td>' + data.d[i].nu_placa + '</td>';
-                html += '<td>' + data.d[i].no_modelo_auto + '</td>';
-                html += '<td>' + data.d[i].nu_kilometraje + '</td>';
-                html += '<td>' + data.d[i].no_cliente + '</td></tr>';
+            for (var i = 0; i < data.d.Resultado.length; i++) {
+                html += '<tr><td style="display:none">' + data.d.Resultado[i].ID_HABITACION + '</td>' + htmlBotones;
+                html += '<td>' + data.d.Resultado[i].NUMERO + '</td>';
+                html += '<td>' + data.d.Resultado[i].TIPOHABITACION.DESCRIPCION + '</td>';
+                html += '<td>' + data.d.Resultado[i].PRECIO + '</td>';
+                html += '<td>' + data.d.Resultado[i].DSC_ESTADO + '</td></tr>';
             }
 
-            $("#tbl_auto tbody").append(html);
+            $("#tbl_habitacion tbody").append(html);
 
-            $("#tbl_auto button").click(function () {
+            $("#tbl_habitacion button").click(function () {
                 if ($(this).attr("name") == "editar") {
-                    fc_editar_auto($(this).parent().parent().children(0).html());
+                    fc_editar_habitacion($(this).parent().parent().children(0).html());
                     event.preventDefault();
                 } else if ($(this).attr("name") == "anular") {
-                    if (confirm("¿Esta seguro de anular auto?")) {
+                    if (confirm("¿Esta seguro de anular habitación?")) {
                         $.ajax({
                             type: "POST",
-                            url: "page/mantenimiento/habitacion.aspx/AnularAutoWM",
+                            url: "page/mantenimiento/habitacion.aspx/AnularHabitacionWM",
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
-                            data: JSON.stringify({ idAuto: $(this).parent().parent().children(0).html() }),
+                            data: JSON.stringify({ idHabitacion: $(this).parent().parent().children(0).html() }),
                             async: true,
                             beforeSend: function () {
-                                $("#tbl_auto button").attr("disabled", true);
+                                $("#tbl_habitacion button").attr("disabled", true);
                             },
                             success: function (data) {
-                                $("#tbl_auto button").removeAttr("disabled");
+                                $("#tbl_habitacion button").removeAttr("disabled");
 
-                                if (data.d.error) {
-                                    $("#errorDiv").html(GenerarAlertaError(data.d.error));
+                                if (!data.d.Activo) {
+                                    $("#errorDiv").html(GenerarAlertaError(data.d.Mensaje));
                                     return;
                                 }
 
-                                $("#errorDiv").html(GenerarAlertaSuccess(data.d.success));
+                                $("#errorDiv").html(GenerarAlertaSuccess(data.d.Mensaje));
                                 $("#btn_buscar").click();
                             },
                             error: function (data) {
                                 $("#errorDiv").html(GenerarAlertaError("Inconveniente en la operación"));
-                                $("#tbl_auto button").removeAttr("disabled");
+                                $("#tbl_habitacion button").removeAttr("disabled");
                             }
                         });
                         event.preventDefault();
@@ -223,8 +199,8 @@ $("#btn_buscar").click(function () {
                 }
             });
 
-            $("#tbl_auto tbody tr").dblclick(function () {
-                fc_editar_auto($(this).children(0).html());
+            $("#tbl_habitacion tbody tr").dblclick(function () {
+                fc_editar_habitacion($(this).children(0).html());
                 event.preventDefault();
             });
         },
@@ -236,43 +212,42 @@ $("#btn_buscar").click(function () {
 });
 
 $("#btn_guardar").click(function () {
-    $("#errorAuto").html('');
+    $("#errorHabitacion").html('');
 
-    if ($("#txt_placa").val().trim() == "") {
-        $("#errorAuto").html(GenerarAlertaWarning("Placa: ingres campo"));
-        $("#txt_placa").focus();
-        return;
-    } else if ($("#txt_kilometraje").val() != "" && isNaN($("#txt_kilometraje").val())) {
-        $("#errorAuto").html(GenerarAlertaWarning("Kilometraje: valor invalido"));
-        $("#txt_kilometraje").focus();
-        return;
-    } else if ($("#txt_intervalo").val() != "" && isNaN($("#txt_intervalo").val())) {
-        $("#errorAuto").html(GenerarAlertaWarning("Intervalo: valor invalido"));
-        $("#txt_intervalo").focus();
+    if ($("#txt_numero").val().trim() == "") {
+        $("#errorHabitacion").html(GenerarAlertaWarning("Numero: ingresar campo"));
+        $("#txt_numero").focus();
         return;
     } else if ($("#sel_tipo").val() == "0") {
-        $("#errorAuto").html(GenerarAlertaWarning("Modelo: seleccione una opción"));
+        $("#errorHabitacion").html(GenerarAlertaWarning("Tipo: seleccione una opción"));
         $("#sel_tipo").focus();
         return;
-    } else if ($("#txh_idcliente").val() == "0") {
-        $("#errorAuto").html(GenerarAlertaWarning("Cliente: seleccione una opción"));
+    } else if ($("#txt_precio").val() == "" || isNaN($("#txt_precio").val())) {
+        $("#errorHabitacion").html(GenerarAlertaWarning("Precio: ingresar monto valido"));
+        $("#txt_precio").focus();
+        return;
+    } else if ($("#sel_estado").val() == "0") {
+        $("#errorHabitacion").html(GenerarAlertaWarning("Estado: seleccione una opción"));
+        $("#sel_estado").focus();
         return;
     }
 
+    var eHabitacion = {
+        ID_HABITACION: $("#txh_idhabitacion").val() == "" ? 0 : $("#txh_idhabitacion").val(),
+        NUMERO: $("#txt_numero").val(),
+        TIPOHABITACION: {
+            ID_TIPO_HABITACION: $("#sel_tipo").val()
+        },
+        PRECIO: ($("#txt_precio").val() == "" ? 0 : $("#txt_precio").val()),
+        ESTADO: $("#sel_estado").val(),
+    };
+
     $.ajax({
         type: "POST",
-        url: "page/mantenimiento/habitacion.aspx/GuardarAutoWM",
+        url: "page/mantenimiento/habitacion.aspx/GuardarHabitacionWM",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        data: JSON.stringify({
-            nid_auto: $("#txh_idauto").val() == "" ? 0 : $("#txh_idauto").val(),
-            nu_placa: $("#txt_placa").val(),
-            nu_kilometraje: ($("#txt_kilometraje").val() == "" ? 0 : $("#txt_kilometraje").val()),
-            nu_intervalo: ($("#txt_intervalo").val() == "" ? 0 : $("#txt_intervalo").val()),
-            nid_modelo_auto: $("#sel_tipo").val(),
-            nid_submodelo_auto: $("#sel_submodelo").val(),
-            nid_cliente: $("#txh_idcliente").val()
-        }),
+        data: JSON.stringify({ eHabitacion: eHabitacion }),
         async: true,
         beforeSend: function () {
             $("#btn_guardar").attr("disabled", true);
@@ -280,100 +255,19 @@ $("#btn_guardar").click(function () {
         success: function (data) {
             $("#btn_guardar").removeAttr("disabled");
 
-            if (data.d.error) {
-                $("#errorAuto").html(GenerarAlertaError(data.d.error));
+            if (!data.d.Activo) {
+                $("#errorHabitacion").html(GenerarAlertaError(data.d.Mensaje));
                 return;
             }
 
-            $("#errorDiv").html(GenerarAlertaSuccess(data.d.success));
-            $("#pnl_auto").modal('hide');
+            $("#errorDiv").html(GenerarAlertaSuccess(data.d.Mensaje));
+            $("#pnl_habitacion").modal('hide');
+            $("#btn_buscar").click();
         },
         error: function (data) {
-            $("#errorAuto").html(GenerarAlertaError("Inconveniente en la operación"));
+            $("#errorHabitacion").html(GenerarAlertaError("Inconveniente en la operación"));
             $("#btn_guardar").removeAttr("disabled");
         }
     });
     event.preventDefault();
-});
-
-
-/*****************************************Busqueda Cliente*****************************************/
-$("#btn_buscar_cliente").click(function () {
-    $("#errorBusquedaCliente").html('');
-
-    $('#tbl_busquedacliente tbody').empty();
-    $("#pnl_busquedacliente").modal('show');
-});
-
-$("#sel_bcli_tipopersona").change(function () {
-    $('#pnl_bcli_juridico').css("display", "");
-    $('#pnl_bcli_natural').css("display", "");
-
-    if ($("#sel_bcli_tipopersona").val() == "J") {
-        $('#pnl_bcli_natural').css("display", "none");
-    } else if ($("#sel_bcli_tipopersona").val() == "N") {
-        $('#pnl_bcli_juridico').css("display", "none");
-    }
-});
-
-$("#pnl_busquedacliente input:text").keyup(function (e) {
-    if (e.keyCode == 13) {
-        $("#btn_bcli_buscar").click();
-    }
-});
-
-$("#btn_bcli_buscar").click(function () {
-    $.ajax({
-        type: "POST",
-        url: "page/mantenimiento/habitacion.aspx/BuscarClienteWM",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        data: JSON.stringify({
-            tipoPersona: $("#sel_bcli_tipopersona").val(), nroDoc: $("#txt_bcli_nrodoc").val(),
-            nombre: $("#txt_bcli_nombre").val(), razonSocial: $("#txt_bcli_razonsocial").val()
-        }),
-        async: true,
-        beforeSend: function () {
-            $("#errorBusquedaCliente").html('');
-            $("#btn_bcli_buscar").attr("disabled", true);
-        },
-        success: function (data) {
-            $("#btn_bcli_buscar").removeAttr("disabled");
-
-            if (data.d.error) {
-                $("#errorBusquedaCliente").html(GenerarAlertaError(data.d.error));
-                return;
-            }
-
-            $('#tbl_busquedacliente tbody').empty();
-
-            var htmlBotones = '<td><button name="seleccionar" class="btn btn-primary btn-xs"><i class="icon-plus"></i></button></td>';
-            var html = '';
-            for (var i = 0; i < data.d.length; i++) {
-                html += '<tr><td style="display:none">' + data.d[i].nid_cliente + '</td>' + htmlBotones;
-                html += '<td>' + data.d[i].fl_tipo_doc + '</td>';
-                html += '<td>' + data.d[i].nu_documento + '</td>';
-                html += '<td>' + (data.d[i].fl_tipo_persona == 'J' ? data.d[i].no_razon_social : data.d[i].no_natural + ' ' + data.d[i].no_apaterno + ' ' + data.d[i].no_amaterno) + '</td></tr>';
-            }
-
-            $("#tbl_busquedacliente tbody").append(html);
-
-            $("#tbl_busquedacliente button").click(function () {
-                if ($(this).attr("name") == "seleccionar") {
-                    var filaCliente = $(this).parent().parent().find("td");
-
-                    $("#txh_idcliente").val(filaCliente.eq(0).html());
-                    $("#txt_nucliente").val(filaCliente.eq(3).html());
-                    $("#txt_nocliente").val(filaCliente.eq(4).html());
-
-                    $("#pnl_busquedacliente").modal('hide');
-                    event.preventDefault();
-                }
-            });
-        },
-        error: function (data) {
-            $("#errorBusquedaCliente").html(GenerarAlertaError("Inconveniente en la operación"));
-            $("#btn_bcli_buscar").removeAttr("disabled");
-        }
-    });
 });

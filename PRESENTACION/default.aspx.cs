@@ -41,7 +41,7 @@ namespace PRESENTACION
                 EUsuario eSession = (EUsuario)HttpContext.Current.Session["UserData"];
 
 
-                List<EMenu> listaMenu = NUsuario.PerfilUsuario(eSession.ID_USUARIO).OrderBy(x => x.ID_PADRE).ToList();
+                List<EMenu> listaMenu = NUsuario.PerfilUsuario(eSession.ID_USUARIO).OrderBy(x => x.ID_MENU).ToList();
 
                 objRespuesta.Resultado = new
                 {
