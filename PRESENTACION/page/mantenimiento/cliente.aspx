@@ -82,6 +82,8 @@
     </div>
 </div>
 
+<input id="txh_idcliente" type="hidden" />
+
 <div id="pnl_cliente" aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal fade">
     <div class="modal-dialog modal-extend-fgp">
         <div class="modal-content">
@@ -91,7 +93,6 @@
             </div>
             <div class="modal-body">
                 <div id="errorCliente"></div>
-                <input id="txh_idcliente" type="hidden" />
                 <div class="row">
                     <div class="col-lg-2">
                         <div class="form-group">
