@@ -38,7 +38,7 @@
                     <li id="header_notification_bar" class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <i class="icon-bell-alt"></i>
-                            <span class="badge bg-warning">0</span>
+                            <span id="cantidadNotificaciones" class="badge bg-warning">0</span>
                         </a>
                         <ul class="dropdown-menu extended notification">
                             <%--<div class="notify-arrow notify-arrow-yellow"></div>

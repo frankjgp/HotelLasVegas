@@ -199,13 +199,19 @@
     <Content Include="js\page\mantenimiento\habitacion.js" />
     <Content Include="js\page\mantenimiento\cliente.js" />
     <Content Include="js\page\mantenimiento\usuario.js" />
+    <Content Include="js\page\operacion\alerta.js" />
+    <Content Include="js\page\operacion\movimiento.js" />
     <Content Include="js\page\operacion\atencion.js" />
+    <Content Include="js\page\reporte\reporte.js" />
     <Content Include="js\permiso.js" />
     <Content Include="login.aspx" />
     <Content Include="page\mantenimiento\habitacion.aspx" />
     <Content Include="page\mantenimiento\cliente.aspx" />
     <Content Include="page\mantenimiento\usuario.aspx" />
+    <Content Include="page\operacion\alerta.aspx" />
+    <Content Include="page\operacion\movimiento.aspx" />
     <Content Include="page\operacion\atencion.aspx" />
+    <Content Include="page\reporte\movimiento.aspx" />
     <Content Include="permiso.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -259,12 +265,33 @@
     <Compile Include="page\mantenimiento\usuario.aspx.designer.cs">
       <DependentUpon>usuario.aspx</DependentUpon>
     </Compile>
+    <Compile Include="page\operacion\alerta.aspx.cs">
+      <DependentUpon>alerta.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="page\operacion\alerta.aspx.designer.cs">
+      <DependentUpon>alerta.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="page\operacion\movimiento.aspx.cs">
+      <DependentUpon>movimiento.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="page\operacion\movimiento.aspx.designer.cs">
+      <DependentUpon>movimiento.aspx</DependentUpon>
+    </Compile>
     <Compile Include="page\operacion\atencion.aspx.cs">
       <DependentUpon>atencion.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="page\operacion\atencion.aspx.designer.cs">
       <DependentUpon>atencion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="page\reporte\movimiento.aspx.cs">
+      <DependentUpon>movimiento.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="page\reporte\movimiento.aspx.designer.cs">
+      <DependentUpon>movimiento.aspx</DependentUpon>
     </Compile>
     <Compile Include="permiso.aspx.cs">
       <DependentUpon>permiso.aspx</DependentUpon>

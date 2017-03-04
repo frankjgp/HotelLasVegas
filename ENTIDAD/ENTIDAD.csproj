@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EMovimiento.cs" />
     <Compile Include="ETipoHabitacion.cs" />
     <Compile Include="EHabitacion.cs" />
     <Compile Include="EMenu.cs" />

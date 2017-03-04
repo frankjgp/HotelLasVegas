@@ -37,6 +37,7 @@ $(document).ready(function () {
     $.history.init(documentLoad);
 
     InfoSesion();
+    fc_listar_total_alertas();
 
     $("#cerrarSesion").click(function () {
         $.ajax({
@@ -184,5 +185,25 @@ function InfoNotificacionUsuario() {
             $("#header_notification_bar ul").append(htmlMenu);
         },
         error: function (data) { }
+    });
+}
+
+function fc_listar_total_alertas() {
+    $.ajax({
+        type: "POST",
+        url: "default.aspx/ListaTotalAlertaWM",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        async: true,
+        success: function (data) {
+            if (data.d.error) {
+                return;
+            }
+            //alert(data.d.Resultado.toString());
+            $("#cantidadNotificaciones").html(data.d.Resultado.toString());
+        },
+        error: function (data) {
+            $("#errorDiv").html(GenerarAlertaError("Inconveniente en la operación"));
+        }
     });
 }

@@ -167,5 +167,30 @@ namespace PRESENTACION
                 return new { error = string.IsNullOrEmpty(ex.Message) ? ex.InnerException.Message : ex.Message };
             }
         }
+
+        [WebMethod()]
+        public static object ListaTotalAlertaWM()
+        {
+            ERespuestaJson objRespuesta = new ERespuestaJson();
+            try
+            {
+                string objResultado ="";
+                EUsuario eSession = (EUsuario)HttpContext.Current.Session["UserData"];
+                objResultado = NMovimiento.ListarTotalAlerta(eSession.LOCAL.ID_LOCAL);
+                if (objResultado == "")
+                {
+                    objRespuesta.Error("No se encontraron habitaciones.");
+                }
+                else
+                {
+                    objRespuesta.Resultado = objResultado;
+                }
+            }
+            catch (Exception ex)
+            {
+                objRespuesta.Error(String.IsNullOrEmpty(ex.Message) ? ex.InnerException.Message : ex.Message);
+            }
+            return objRespuesta;
+        }
     }
 }
