@@ -44,12 +44,12 @@
                             <%--<div class="notify-arrow notify-arrow-yellow"></div>
                             <li>
                                 <p class="yellow">Usted tiene ' + data.d.length.toString() + ' notificacion(es)</p>
-                            </li>
-                            <li>
-                                <a href="#!/page/venta/cotizacion">
-                                    <span class="label label-danger">Rechazado</span>Factura 001-632001
-                                </a>
                             </li>--%>
+                            <li>
+                                <a href="#!/page/operacion/alerta">
+                                    <span class="label label-danger">Ver</span>Reservas y Atenciones
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <!-- notification dropdown end -->
