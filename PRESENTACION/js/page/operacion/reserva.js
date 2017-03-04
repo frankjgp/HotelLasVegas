@@ -1,6 +1,6 @@
 ﻿/*Inicializar Script*/
 $(function () {
-    $(document).prop("title", "LV::Atención");
+    $(document).prop("title", "LV::Reserva");
     $(document).unbind("keydown");
 
     $('.dtOp').datepicker({
@@ -17,7 +17,7 @@ $(function () {
     //Lista Data Inicial
     $.ajax({
         type: "POST",
-        url: "page/operacion/atencion.aspx/ListaInicialWM",
+        url: "page/operacion/reserva.aspx/ListaInicialWM",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         async: true,
@@ -73,7 +73,9 @@ function fc_calcular_total() {
     $('#txt_total').val(toDecimal(precio * dias, 2));
 }
 
-function fc_obtener_reserva(idReserva) {
+function fc_editar_reserva(idReserva) {
+    $('#pnl_reserva .modal-title').html('Editar Reserva');
+
     $.ajax({
         type: "POST",
         url: "page/operacion/reserva.aspx/ObtenerReservaWM",
@@ -82,9 +84,12 @@ function fc_obtener_reserva(idReserva) {
         data: JSON.stringify({ idReserva: idReserva }),
         async: true,
         beforeSend: function () {
-            $("#errorAtencion").html('');
+            $("#errorReserva").html('');
+            $("#tbl_reserva button").attr("disabled", true);
         },
         success: function (data) {
+            $("#tbl_reserva button").removeAttr("disabled");
+
             if (!data.d.Activo) {
                 $("#errorDiv").html(GenerarAlertaError(data.d.Mensaje));
                 return;
@@ -109,80 +114,17 @@ function fc_obtener_reserva(idReserva) {
             $("#sel_mediopago").val(data.d.Resultado.ID_MEDIO_PAGO);
             $("#txt_observacion").val(data.d.Resultado.OBSERVACION);
 
-            $("#txt_clientereserva").val(data.d.Resultado.NOM_CLIENTE);
-            $("#txt_detallereserva").val('Fec.Inicio: ' + $("#txt_fechainicio").val() + ' / Adelanto: ' + $("#txt_adelanto").val());
-
-            $("#txt_clientereserva").prop('disabled', true);
-            $("#btn_buscar_reserva").children().attr('class', 'icon-remove');
-
-            $("#txt_nrocliente").prop('disabled', true);
-            $("#txt_nomcliente").prop('disabled', true);
-            $("#btn_buscar_cliente").prop('disabled', true);
-            $("#btn_buscar_cliente").children().attr('class', 'icon-remove');
-
-
-            $("#pnl_reserva").hide();
-        },
-        error: function (data) {
-            $("#errorDiv").html(GenerarAlertaError("Inconveniente en la operación"));
-        }
-    });
-}
-
-function fc_editar_atencion(idAtencion) {
-    $('#pnl_atencion .modal-title').html('Editar Atención');
-
-    $.ajax({
-        type: "POST",
-        url: "page/operacion/atencion.aspx/ObtenerAtencionWM",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        data: JSON.stringify({ idAtencion: idAtencion }),
-        async: true,
-        beforeSend: function () {
-            $("#errorAtencion").html('');
-            $("#tbl_atencion button").attr("disabled", true);
-        },
-        success: function (data) {
-            $("#tbl_atencion button").removeAttr("disabled");
-
-            if (!data.d.Activo) {
-                $("#errorDiv").html(GenerarAlertaError(data.d.Mensaje));
-                return;
-            }
-
-            $('#txh_idreserva').parent().parent().parent().parent().hide();
-            $("#txh_idatencion").val(data.d.Resultado.ID_ATENCION);
-            $("#txh_idhabitacion").val(data.d.Resultado.ID_HABITACION);
-            $("#txh_idcliente").val(data.d.Resultado.ID_CLIENTE);
-
-            $("#txt_fechainicio").val(formatDate(parseDateServer(data.d.Resultado.FEC_INI), "dd/MM/yyyy"));
-            $("#txt_fechainicio").parent().datepicker("update", $("#txt_fechainicio").val());
-            $("#txt_fechafin").val(formatDate(parseDateServer(data.d.Resultado.FEC_FIN), "dd/MM/yyyy"));
-            $("#txt_fechafin").parent().datepicker("update", $("#txt_fechafin").val());
-
-            $("#txt_nrocliente").val(data.d.Resultado.NUM_CLIENTE);
-            $("#txt_nomcliente").val(data.d.Resultado.NOM_CLIENTE);
-            $("#txt_habitacion").val(data.d.Resultado.NUM_HABITACION + ' (' + data.d.Resultado.TIPO_HABITACION + ')');
-            $("#txt_precio").val(data.d.Resultado.PRECIO_HAB);
-            $("#txt_total").val(data.d.Resultado.TOTAL_HAB);
-            $("#sel_tiporeserva").val(data.d.Resultado.ID_TIPO_RESERVA);
-            $("#txt_adelanto").val(data.d.Resultado.ADELANTO);
-            $("#sel_mediopago").val(data.d.Resultado.ID_MEDIO_PAGO);
-            $("#txt_observacion").val(data.d.Resultado.OBSERVACION);
-
             $("#txt_nrocliente").prop('disabled', true);
             $("#txt_nomcliente").prop('disabled', true);
             $("#btn_buscar_cliente").children().attr('class', 'icon-remove');
 
-            $('#pnl_reserva').hide();
             $('#pnl_habitacion').hide();
             $('#pnl_cliente').hide();
-            $("#pnl_atencion").modal('show');
+            $("#pnl_reserva").modal('show');
         },
         error: function (data) {
             $("#errorDiv").html(GenerarAlertaError("Inconveniente en la operación"));
-            $("#tbl_atencion button").removeAttr("disabled");
+            $("#tbl_reserva button").removeAttr("disabled");
         }
     });
 }
@@ -206,7 +148,7 @@ $(document).keydown(function (evt) {
             break;
         case 71: //GUARDAR
             if (evt ? evt.altKey : event.altKey) {
-                if ($("#pnl_atencion").css('display') == 'block') {
+                if ($("#pnl_reserva").css('display') == 'block') {
                     $("#btn_guardar").click();
                 }
             }
@@ -222,15 +164,11 @@ $("#btn_limpiar").click(function () {
 
 $("#btn_nuevo").click(function () {
     $("#errorDiv").html('');
-    $("#errorAtencion").html('');
-    $('#pnl_atencion .modal-title').html('Nueva Atención');
-    $("#txh_idatencion").val('0');
+    $("#errorReserva").html('');
+    $('#pnl_reserva .modal-title').html('Nueva Reserva');
     $("#txh_idreserva").val('0');
     $("#txh_idhabitacion").val('0');
     $("#txh_idcliente").val('0');
-
-    $("#txt_clientereserva").val('');
-    $("#txt_detallereserva").val('');
 
     $("#txt_nrocliente").val('');
     $("#txt_nomcliente").val('');
@@ -242,18 +180,13 @@ $("#btn_nuevo").click(function () {
     $("#sel_mediopago").val('0');
     $("#txt_observacion").val('');
 
-    $("#txt_clientereserva").prop('disabled', false);
-    $("#btn_buscar_reserva").children().attr('class', 'icon-search');
-
     $("#txt_nrocliente").prop('disabled', false);
     $("#txt_nomcliente").prop('disabled', false);
     $("#btn_buscar_cliente").children().attr('class', 'icon-search');
 
-    $('#txh_idreserva').parent().parent().parent().parent().show();
-    $('#pnl_reserva').hide();
     $('#pnl_habitacion').hide();
     $('#pnl_cliente').hide();
-    $("#pnl_atencion").modal('show');
+    $("#pnl_reserva").modal('show');
 
 });
 
@@ -270,7 +203,7 @@ $("#pnl_busqueda input:text").keyup(function (e) {
 $("#btn_buscar").click(function () {
     $.ajax({
         type: "POST",
-        url: "page/operacion/atencion.aspx/BuscarAtencionWM",
+        url: "page/operacion/reserva.aspx/BuscarReservaWM",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         data: JSON.stringify({
@@ -289,13 +222,13 @@ $("#btn_buscar").click(function () {
                 return;
             }
 
-            $('#tbl_atencion tbody').empty();
+            $('#tbl_reserva tbody').empty();
 
             var htmlBotones = '<button name="editar" class="btn btn-primary btn-xs"><i class="icon-pencil"></i></button>' +
                                 '<button name="anular" class="btn btn-danger btn-xs"><i class="icon-trash "></i></button>';
             var html = '';
             for (var i = 0; i < data.d.Resultado.length; i++) {
-                html += '<tr><td style="display:none">' + data.d.Resultado[i].ID_ATENCION + '</td>';
+                html += '<tr><td style="display:none">' + data.d.Resultado[i].ID_RESERVA + '</td>';
                 html += '<td>' + (data.d.Resultado[i].ESTADO == 1 ? htmlBotones : '') + '</td>';
                 html += '<td>' + data.d.Resultado[i].NUM_HABITACION + '</td>';
                 html += '<td>' + data.d.Resultado[i].TIPO_HABITACION + '</td>';
@@ -304,30 +237,29 @@ $("#btn_buscar").click(function () {
                 html += '<td>' + data.d.Resultado[i].NOM_CLIENTE + '</td>';
                 html += '<td>' + data.d.Resultado[i].PRECIO_HAB + '</td>';
                 html += '<td>' + data.d.Resultado[i].ADELANTO + '</td>';
-                html += '<td>' + (data.d.Resultado[i].ID_RESERVA > 0 ? '<span class="label label-info label-mini">Reserva</span>' : '') + '</td>';
                 html += '<td>' + data.d.Resultado[i].DSC_ESTADO + '</td></tr>';
             }
 
-            $("#tbl_atencion tbody").append(html);
+            $("#tbl_reserva tbody").append(html);
 
-            $("#tbl_atencion button").click(function () {
+            $("#tbl_reserva button").click(function () {
                 if ($(this).attr("name") == "editar") {
-                    fc_editar_atencion($(this).parent().parent().children(0).html());
+                    fc_editar_reserva($(this).parent().parent().children(0).html());
                     event.preventDefault();
                 } else if ($(this).attr("name") == "anular") {
-                    if (confirm("¿Esta seguro de anular atención?")) {
+                    if (confirm("¿Esta seguro de anular reserva?")) {
                         $.ajax({
                             type: "POST",
-                            url: "page/operacion/atencion.aspx/AnularAtencionWM",
+                            url: "page/operacion/reserva.aspx/AnularReservaWM",
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
-                            data: JSON.stringify({ idAtencion: $(this).parent().parent().children(0).html() }),
+                            data: JSON.stringify({ idReserva: $(this).parent().parent().children(0).html() }),
                             async: true,
                             beforeSend: function () {
-                                $("#tbl_atencion button").attr("disabled", true);
+                                $("#tbl_reserva button").attr("disabled", true);
                             },
                             success: function (data) {
-                                $("#tbl_atencion button").removeAttr("disabled");
+                                $("#tbl_reserva button").removeAttr("disabled");
 
                                 if (!data.d.Activo) {
                                     $("#errorDiv").html(GenerarAlertaError(data.d.Mensaje));
@@ -339,7 +271,7 @@ $("#btn_buscar").click(function () {
                             },
                             error: function (data) {
                                 $("#errorDiv").html(GenerarAlertaError("Inconveniente en la operación"));
-                                $("#tbl_atencion button").removeAttr("disabled");
+                                $("#tbl_reserva button").removeAttr("disabled");
                             }
                         });
                         event.preventDefault();
@@ -355,67 +287,6 @@ $("#btn_buscar").click(function () {
 });
 
 
-$("#txt_clientereserva").keyup(function (e) {
-    if (e.keyCode == 13) {
-        $("#btn_buscar_reserva").click();
-    }
-});
-
-$("#btn_buscar_reserva").click(function () {
-    if ($("#btn_buscar_reserva").children().attr('class') == 'icon-remove') {
-        $("#btn_nuevo").click();
-        return;
-    }
-
-    $.ajax({
-        type: "POST",
-        url: "page/operacion/atencion.aspx/BuscarReservaWM",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        data: JSON.stringify({
-            nocliente: $("#txt_clientereserva").val()
-        }),
-        async: true,
-        beforeSend: function () {
-            $("#btn_buscar_reserva").attr("disabled", true);
-        },
-        success: function (data) {
-            $("#btn_buscar_reserva").removeAttr("disabled");
-
-            if (!data.d.Activo) {
-                $("#errorAtencion").html(GenerarAlertaError(data.d.Mensaje));
-                return;
-            }
-
-            $('#tbl_reserva tbody').empty();
-
-            var html = '';
-            for (var i = 0; i < data.d.Resultado.length; i++) {
-                html += '<tr><td style="display:none">' + data.d.Resultado[i].ID_RESERVA + '</td>';
-                html += '<td>' + data.d.Resultado[i].NOM_CLIENTE + '</td>';
-                html += '<td>' + data.d.Resultado[i].NUM_HABITACION + '</td>';
-                html += '<td>' + formatDate(parseDateServer(data.d.Resultado[i].FEC_INI), "dd/MM/yyyy") + '</td>';
-                html += '<td>' + formatDate(parseDateServer(data.d.Resultado[i].FEC_FIN), "dd/MM/yyyy") + '</td></tr>';
-            }
-
-            $("#tbl_reserva tbody").append(html);
-
-            $("#tbl_reserva tbody tr").dblclick(function () {
-                var fila = $(this).find('td');
-                fc_obtener_reserva(fila.eq(0).html());
-                event.preventDefault();
-            });
-
-            $('#pnl_reserva').show();
-        },
-        error: function (data) {
-            $("#errorAtencion").html(GenerarAlertaError("Inconveniente en la operación"));
-            $("#btn_buscar_reserva").removeAttr("disabled");
-        }
-    });
-});
-
-
 $("#sel_tipo").change(function () {
     $('#pnl_habitacion').hide();
 });
@@ -423,7 +294,7 @@ $("#sel_tipo").change(function () {
 $("#btn_buscar_habitacion").click(function () {
     $.ajax({
         type: "POST",
-        url: "page/operacion/atencion.aspx/BuscarHabitacionWM",
+        url: "page/operacion/reserva.aspx/BuscarHabitacionWM",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         data: JSON.stringify({
@@ -440,7 +311,7 @@ $("#btn_buscar_habitacion").click(function () {
             $("#btn_buscar_habitacion").removeAttr('disabled');
 
             if (!data.d.Activo) {
-                $("#errorAtencion").html(GenerarAlertaError(data.d.Mensaje));
+                $("#errorReserva").html(GenerarAlertaError(data.d.Mensaje));
                 return;
             }
 
@@ -469,7 +340,7 @@ $("#btn_buscar_habitacion").click(function () {
             $('#pnl_habitacion').show();
         },
         error: function (data) {
-            $("#errorAtencion").html(GenerarAlertaError("Inconveniente en la operación"));
+            $("#errorReserva").html(GenerarAlertaError("Inconveniente en la operación"));
             $("#btn_buscar_habitacion").removeAttr('disabled');
         }
     });
@@ -498,7 +369,7 @@ $("#btn_buscar_cliente").click(function () {
 
     $.ajax({
         type: "POST",
-        url: "page/operacion/atencion.aspx/BuscarClienteWM",
+        url: "page/operacion/reserva.aspx/BuscarClienteWM",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         data: JSON.stringify({
@@ -513,7 +384,7 @@ $("#btn_buscar_cliente").click(function () {
             $("#btn_buscar_cliente").removeAttr("disabled");
 
             if (!data.d.Activo) {
-                $("#errorAtencion").html(GenerarAlertaError(data.d.Mensaje));
+                $("#errorReserva").html(GenerarAlertaError(data.d.Mensaje));
                 return;
             }
 
@@ -542,42 +413,41 @@ $("#btn_buscar_cliente").click(function () {
             $('#pnl_cliente').show();
         },
         error: function (data) {
-            $("#errorAtencion").html(GenerarAlertaError("Inconveniente en la operación"));
+            $("#errorReserva").html(GenerarAlertaError("Inconveniente en la operación"));
             $("#btn_buscar_cliente").removeAttr("disabled");
         }
     });
 });
 
 $("#btn_guardar").click(function () {
-    $("#errorAtencion").html('');
+    $("#errorReserva").html('');
 
     if ($("#txh_idhabitacion").val() == "" || $("#txh_idhabitacion").val() == "0") {
-        $("#errorAtencion").html(GenerarAlertaWarning("Habitacion: seleccione un registro"));
+        $("#errorReserva").html(GenerarAlertaWarning("Habitacion: seleccione un registro"));
         return;
     } else if ($("#txh_idcliente").val() == "" || $("#txh_idcliente").val() == "0") {
-        $("#errorAtencion").html(GenerarAlertaWarning("Cliente: seleccione un registro"));
+        $("#errorReserva").html(GenerarAlertaWarning("Cliente: seleccione un registro"));
         $("#txt_nrocliente").focus();
         return;
     } else if ($("#txt_precio").val() == "" || isNaN($("#txt_precio").val())) {
-        $("#errorAtencion").html(GenerarAlertaWarning("Precio: ingresar monto valido"));
+        $("#errorReserva").html(GenerarAlertaWarning("Precio: ingresar monto valido"));
         $("#txt_precio").focus();
         return;
     } else if ($("#sel_tiporeserva").val() == null || $("#sel_tiporeserva").val() == "0") {
-        $("#errorAtencion").html(GenerarAlertaWarning("Tipo Reserva: seleccione una opción"));
+        $("#errorReserva").html(GenerarAlertaWarning("Tipo Reserva: seleccione una opción"));
         $("#sel_tiporeserva").focus();
         return;
     } else if ($("#txt_adelanto").val() == "" || isNaN($("#txt_adelanto").val())) {
-        $("#errorAtencion").html(GenerarAlertaWarning("Adelanto: ingresar monto valido"));
+        $("#errorReserva").html(GenerarAlertaWarning("Adelanto: ingresar monto valido"));
         $("#txt_adelanto").focus();
         return;
     } else if ($("#sel_mediopago").val() == null || $("#sel_mediopago").val() == "0") {
-        $("#errorAtencion").html(GenerarAlertaWarning("Medio Pago: seleccione una opción"));
+        $("#errorReserva").html(GenerarAlertaWarning("Medio Pago: seleccione una opción"));
         $("#sel_mediopago").focus();
         return;
     }
 
-    var eAtencion = {
-        ID_ATENCION: $("#txh_idatencion").val() == "" ? 0 : $("#txh_idatencion").val(),
+    var eReserva = {
         ID_RESERVA: $("#txh_idreserva").val() == "" ? 0 : $("#txh_idreserva").val(),
         ID_CLIENTE: $("#txh_idcliente").val(),
         ID_HABITACION: $("#txh_idhabitacion").val(),
@@ -593,10 +463,10 @@ $("#btn_guardar").click(function () {
 
     $.ajax({
         type: "POST",
-        url: "page/operacion/atencion.aspx/GuardarAtencionWM",
+        url: "page/operacion/reserva.aspx/GuardarReservaWM",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        data: JSON.stringify({ eAtencion: eAtencion }),
+        data: JSON.stringify({ eReserva: eReserva }),
         async: true,
         beforeSend: function () {
             $("#btn_guardar").attr("disabled", true);
@@ -605,16 +475,16 @@ $("#btn_guardar").click(function () {
             $("#btn_guardar").removeAttr("disabled");
 
             if (!data.d.Activo) {
-                $("#errorAtencion").html(GenerarAlertaError(data.d.Mensaje));
+                $("#errorReserva").html(GenerarAlertaError(data.d.Mensaje));
                 return;
             }
 
             $("#errorDiv").html(GenerarAlertaSuccess(data.d.Mensaje));
-            $("#pnl_atencion").modal('hide');
+            $("#pnl_reserva").modal('hide');
             $("#btn_buscar").click();
         },
         error: function (data) {
-            $("#errorAtencion").html(GenerarAlertaError("Inconveniente en la operación"));
+            $("#errorReserva").html(GenerarAlertaError("Inconveniente en la operación"));
             $("#btn_guardar").removeAttr("disabled");
         }
     });

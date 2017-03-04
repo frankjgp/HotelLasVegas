@@ -17,5 +17,10 @@ namespace ENTIDAD
         public string DSC_ESTADO { get; set; }
         public int USU_REG { get; set; }
         public int OPCION { get; set; }
+
+        #region EXTRAS
+        public DateTime FECHA_INICIO { get; set; }
+        public DateTime FECHA_FIN { get; set; }
+        #endregion
     }
 }

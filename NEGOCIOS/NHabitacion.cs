@@ -24,5 +24,10 @@ namespace NEGOCIOS
         {
             return DHabitacion.ListarTipoHabitacion();
         }
+
+        public static List<EHabitacion> DisponibilidadHabitacion(EHabitacion objE)
+        {
+            return DHabitacion.DisponibilidadHabitacion(objE);
+        }
     }
 }

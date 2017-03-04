@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="atencion.aspx.cs" Inherits="PRESENTACION.page.operacion.atencion" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="reserva.aspx.cs" Inherits="PRESENTACION.page.operacion.reserva" %>
 
 <div id="errorDiv"></div>
 <div class="row">
     <div class="col-lg-12">
         <section class="panel">
             <header class="panel-heading">
-                ATENCION
+                RESERVA
             </header>
             <div class="panel-body">
                 <button id="btn_buscar" type="button" class="btn btn-info btn-sm">BUSCAR</button>
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                 </div>
-                <table id="tbl_atencion" class="table table-striped table-hover table-padding-2">
+                <table id="tbl_reserva" class="table table-striped table-hover table-padding-2">
                     <thead>
                         <tr>
                             <th style="display: none"></th>
@@ -64,7 +64,6 @@
                             <th>Cliente</th>
                             <th>Precio</th>
                             <th>Adelanto</th>
-                            <th></th>
                             <th>Estado</th>
                         </tr>
                     </thead>
@@ -76,50 +75,16 @@
     </div>
 </div>
 
-<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="pnl_atencion" class="modal fade">
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="pnl_reserva" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                <h4 class="modal-title">Atención de Habitación</h4>
+                <h4 class="modal-title">Reserva Habitación</h4>
             </div>
             <div class="modal-body">
-                <div id="errorAtencion"></div>
-                <input id="txh_idatencion" type="hidden" />
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            Reserva de Cliente
-                            <div class="input-group">
-                                <input id="txh_idreserva" type="hidden" />
-                                <input id="txt_clientereserva" class="form-control input-sm" type="text" />
-                                <span class="input-group-btn"><button id="btn_buscar_reserva" class="btn btn-info btn-sm" type="button"><i class="icon-search"></i></button></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            Detalle de Reserva
-                            <input id="txt_detallereserva" class="form-control input-sm" type="text" readonly="readonly" />
-                        </div>
-                    </div>
-                </div>
-                <div id="pnl_reserva" class="panel" style="max-height: 100px">
-                    <table id="tbl_reserva" class="table table-striped table-hover table-padding-2">
-                        <thead>
-                            <tr>
-                                <th style="display: none"></th>
-                                <th>Cliente</th>
-                                <th>Habitación</th>
-                                <th>Fec.Inicio</th>
-                                <th>Fec.Fin</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-                
+                <div id="errorReserva"></div>
+                <input id="txh_idreserva" type="hidden" />
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="form-group">
@@ -261,8 +226,8 @@
 </div>
 
 <script type="text/javascript">
-    $.getScript("js/page/operacion/atencion.js")
+    $.getScript("js/page/operacion/reserva.js")
     .fail(function (jqxhr, settings, exception) {
-        alert("Error: No se ha cargando un complemento del sistema (atencion.js), porfavor actualize la pagina para poder cargar el complemento. " + exception);
+        alert("Error: No se ha cargando un complemento del sistema (reserva.js), porfavor actualize la pagina para poder cargar el complemento. " + exception);
     });
 </script>

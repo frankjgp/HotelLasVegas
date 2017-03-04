@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EMedioPago.cs" />
+    <Compile Include="ETipoReserva.cs" />
     <Compile Include="ETipoHabitacion.cs" />
     <Compile Include="EHabitacion.cs" />
     <Compile Include="EMenu.cs" />

@@ -200,12 +200,14 @@
     <Content Include="js\page\mantenimiento\cliente.js" />
     <Content Include="js\page\mantenimiento\usuario.js" />
     <Content Include="js\page\operacion\atencion.js" />
+    <Content Include="js\page\operacion\reserva.js" />
     <Content Include="js\permiso.js" />
     <Content Include="login.aspx" />
     <Content Include="page\mantenimiento\habitacion.aspx" />
     <Content Include="page\mantenimiento\cliente.aspx" />
     <Content Include="page\mantenimiento\usuario.aspx" />
     <Content Include="page\operacion\atencion.aspx" />
+    <Content Include="page\operacion\reserva.aspx" />
     <Content Include="permiso.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -266,6 +268,13 @@
     <Compile Include="page\operacion\atencion.aspx.designer.cs">
       <DependentUpon>atencion.aspx</DependentUpon>
     </Compile>
+    <Compile Include="page\operacion\reserva.aspx.cs">
+      <DependentUpon>reserva.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="page\operacion\reserva.aspx.designer.cs">
+      <DependentUpon>reserva.aspx</DependentUpon>
+    </Compile>
     <Compile Include="permiso.aspx.cs">
       <DependentUpon>permiso.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -285,6 +294,7 @@
       <Name>NEGOCIOS</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
