@@ -29,7 +29,7 @@
                 <div data-original-title="Mostrar o Esconder Menu" data-placement="right" class="icon-reorder tooltips"></div>
             </div>
 
-            <a href="#" class="logo">SI<span>FCA</span></a>
+            <a href="#" class="logo">SI<span>HLV</span></a>
 
             <div class="nav notify-row" id="top_menu">
                 <!--  notification start -->
