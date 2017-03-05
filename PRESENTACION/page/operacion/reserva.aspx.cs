@@ -177,6 +177,7 @@ namespace PRESENTACION.page.operacion
                 EReserva eReserva = new EReserva();
                 eReserva.ID_RESERVA = idReserva;
                 eReserva.OPCION = 5;
+                eReserva.USU_REG = eSession.ID_USUARIO;
                 NReserva.ActualizarReserva(eReserva);
 
                 objRespuesta.Success("Se anulo satisfactoriamente la reserva");

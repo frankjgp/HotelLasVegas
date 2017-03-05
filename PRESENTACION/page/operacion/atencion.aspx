@@ -218,7 +218,7 @@
                             Total
                             <div class="input-group">
                                 <span class="input-group-addon">S/</span>
-                                <input id="txt_total" class="form-control input-sm" type="text" disabled="disabled" />
+                                <input id="txt_total" class="form-control input-sm" type="text" />
                             </div>
                         </div>
                     </div>

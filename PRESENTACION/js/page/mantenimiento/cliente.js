@@ -244,8 +244,8 @@ $("#btn_guardar").click(function () {
         $("#errorCliente").html(GenerarAlertaWarning("Apellidos: ingrese información"));
         $("#txt_apellido").focus();
         return;
-    } else if ($("#txt_nrodoc").val()) {
-        $("#errorCliente").html(GenerarAlertaWarning("N° Dcto.: solo permite numeros"));
+    } else if ($("#txt_nrodoc").val().trim() == "") {
+        $("#errorCliente").html(GenerarAlertaWarning("N° Dcto.: ingrese información"));
         $("#txt_nrodoc").focus();
         return;
     } 

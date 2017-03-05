@@ -30,6 +30,11 @@ namespace NEGOCIOS
             return DUsuario.Login(ent);
         }
 
+        public static int CambiarClave(EUsuario ent)
+        {
+            return DUsuario.CambiarClave(ent);
+        }
+
         public static List<ELocal> PermisoLocal(int id_usuario)
         {
             return DUsuario.PermisoLocal(id_usuario);

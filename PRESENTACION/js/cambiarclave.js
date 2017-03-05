@@ -33,15 +33,15 @@
                 $("#frmCambiar :input").attr("disabled", true);
             },
             success: function (data) {
-                if (data.d.error) {
-                    $("#msg").html(GenerarAlertaError(data.d.error));
+                if (!data.d.Activo) {
+                    $("#msg").html(GenerarAlertaError(data.d.Mensaje));
                     $("#clave").val("");
                     $("#claveR").val("");
                     $("#frmCambiar :input").removeAttr("disabled");
                     return;
                 }
 
-                window.location = data.d.redirect;
+                window.location = data.d.Resultado;
             },
             error: function (data) {
                 $("#msg").html(GenerarAlertaError("Inconveniente en la operación"));

@@ -291,8 +291,9 @@ $("#btn_buscar").click(function () {
 
             $('#tbl_atencion tbody').empty();
 
-            var htmlBotones = '<button name="editar" class="btn btn-primary btn-xs"><i class="icon-pencil"></i></button>' +
-                                '<button name="anular" class="btn btn-danger btn-xs"><i class="icon-trash "></i></button>';
+            var htmlBotones = '<button name="editar" title="Editar" class="btn btn-primary btn-xs"><i class="icon-pencil"></i></button> ' +
+                                '<button name="anular" title="Anular" class="btn btn-danger btn-xs"><i class="icon-trash"></i></button> ' +
+                                '<button name="terminado" title="Terminar" class="btn btn-success btn-xs"><i class="icon-thumbs-up"></i></button>';
             var html = '';
             for (var i = 0; i < data.d.Resultado.length; i++) {
                 html += '<tr><td style="display:none">' + data.d.Resultado[i].ID_ATENCION + '</td>';
@@ -319,6 +320,36 @@ $("#btn_buscar").click(function () {
                         $.ajax({
                             type: "POST",
                             url: "page/operacion/atencion.aspx/AnularAtencionWM",
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            data: JSON.stringify({ idAtencion: $(this).parent().parent().children(0).html() }),
+                            async: true,
+                            beforeSend: function () {
+                                $("#tbl_atencion button").attr("disabled", true);
+                            },
+                            success: function (data) {
+                                $("#tbl_atencion button").removeAttr("disabled");
+
+                                if (!data.d.Activo) {
+                                    $("#errorDiv").html(GenerarAlertaError(data.d.Mensaje));
+                                    return;
+                                }
+
+                                $("#errorDiv").html(GenerarAlertaSuccess(data.d.Mensaje));
+                                $("#btn_buscar").click();
+                            },
+                            error: function (data) {
+                                $("#errorDiv").html(GenerarAlertaError("Inconveniente en la operación"));
+                                $("#tbl_atencion button").removeAttr("disabled");
+                            }
+                        });
+                        event.preventDefault();
+                    }
+                } else if ($(this).attr("name") == "terminado") {
+                    if (confirm("¿Esta seguro de terminar atención?")) {
+                        $.ajax({
+                            type: "POST",
+                            url: "page/operacion/atencion.aspx/TerminarAtencionWM",
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             data: JSON.stringify({ idAtencion: $(this).parent().parent().children(0).html() }),

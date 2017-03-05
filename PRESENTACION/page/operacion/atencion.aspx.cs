@@ -188,6 +188,34 @@ namespace PRESENTACION.page.operacion
         }
 
         [WebMethod()]
+        public static object TerminarAtencionWM(int idAtencion)
+        {
+            ERespuestaJson objRespuesta = new ERespuestaJson();
+            try
+            {
+                if (HttpContext.Current.Session["UserData"] == null)
+                {
+                    objRespuesta.Error("Su sesión ha expirado, por favor vuelva a iniciar sesión");
+                }
+                EUsuario eSession = (EUsuario)HttpContext.Current.Session["UserData"];
+
+                EReserva eAtencion = new EReserva();
+                eAtencion.ID_ATENCION = idAtencion;
+                eAtencion.OPCION = 6;
+                eAtencion.USU_REG = eSession.ID_USUARIO;
+                NReserva.ActualizarAtencion(eAtencion);
+
+                objRespuesta.Success("Se termino satisfactoriamente la atención");
+            }
+            catch (Exception ex)
+            {
+                objRespuesta.Error(string.IsNullOrEmpty(ex.Message) ? ex.InnerException.Message : ex.Message);
+            }
+
+            return objRespuesta;
+        }
+
+        [WebMethod()]
         public static object AnularAtencionWM(int idAtencion)
         {
             ERespuestaJson objRespuesta = new ERespuestaJson();
@@ -202,6 +230,7 @@ namespace PRESENTACION.page.operacion
                 EReserva eAtencion = new EReserva();
                 eAtencion.ID_ATENCION = idAtencion;
                 eAtencion.OPCION = 5;
+                eAtencion.USU_REG = eSession.ID_USUARIO;
                 NReserva.ActualizarAtencion(eAtencion);
 
                 objRespuesta.Success("Se anulo satisfactoriamente la atención");

@@ -92,8 +92,9 @@ $("#btn_buscar").click(function () {
                 return;
             }
 
-            var htmlBotones = '<button name="editar" class="btn btn-primary btn-xs"><i class="icon-pencil"></i></button> ' +
-                                '<button name="anular" class="btn btn-danger btn-xs"><i class="icon-trash "></i></button> ';
+            var htmlBotones = '<button name="editar" title="Editar" class="btn btn-primary btn-xs"><i class="icon-pencil"></i></button> ' +
+                                '<button name="anular" title="Anular" class="btn btn-danger btn-xs"><i class="icon-trash "></i></button> ' +
+                                '<button name="acceso" title="Resetear Clave" class="btn btn-white btn-xs"><i class="icon-key"></i></button>';
             var html = '';
             for (var i = 0; i < data.d.Resultado.length; i++) {
                 html += '<tr><td style="display:none" data-usu="' + data.d.Resultado[i].USUARIO.ID_USUARIO + '">' + data.d.Resultado[i].ID_EMPLEADO + '</td>';
@@ -179,6 +180,36 @@ $("#btn_buscar").click(function () {
                         $.ajax({
                             type: "POST",
                             url: "page/mantenimiento/usuario.aspx/AnularEmpleadoWM",
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            data: JSON.stringify({ idEmpleado: $(this).parent().parent().find("td").eq(0).html() }),
+                            async: true,
+                            beforeSend: function () {
+                                $("#tbl_empleado button").attr("disabled", true);
+                            },
+                            success: function (data) {
+                                $("#tbl_empleado button").removeAttr("disabled");
+
+                                if (!data.d.Activo) {
+                                    $("#errorDiv").html(GenerarAlertaError(data.d.Mensaje));
+                                    return;
+                                }
+
+                                $("#errorDiv").html(GenerarAlertaSuccess(data.d.Mensaje));
+                                $("#btn_buscar").click();
+                            },
+                            error: function (data) {
+                                $("#errorDiv").html(GenerarAlertaError("Inconveniente en la operación"));
+                                $("#tbl_empleado button").removeAttr("disabled");
+                            }
+                        });
+                        event.preventDefault();
+                    }
+                } else if ($(this).attr("name") == "acceso") {
+                    if (confirm("¿Esta seguro de resetear clave?")) {
+                        $.ajax({
+                            type: "POST",
+                            url: "page/mantenimiento/usuario.aspx/ResetearClaveWM",
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             data: JSON.stringify({ idEmpleado: $(this).parent().parent().find("td").eq(0).html() }),

@@ -40,7 +40,10 @@ namespace PRESENTACION
                 else
                 {
                     HttpContext.Current.Session["UserData"] = eUsuario;
-                    objRespuesta.Resultado = "permiso.aspx";
+                    if(eUsuario.ESTADO == 3)
+                        objRespuesta.Resultado = "cambiarclave.aspx";
+                    else
+                        objRespuesta.Resultado = "permiso.aspx";
                 }
             }
             catch (Exception ex)

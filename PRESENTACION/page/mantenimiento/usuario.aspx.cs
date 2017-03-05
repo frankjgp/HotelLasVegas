@@ -124,6 +124,34 @@ namespace PRESENTACION.page.mantenimiento
             return objRespuesta;
         }
 
+
+        [WebMethod()]
+        public static object ResetearClaveWM(int idEmpleado)
+        {
+            ERespuestaJson objRespuesta = new ERespuestaJson();
+            try
+            {
+                if (HttpContext.Current.Session["UserData"] == null)
+                {
+                    objRespuesta.Error("Su sesión ha expirado, por favor vuelva a iniciar sesión");
+                }
+                EUsuario eSession = (EUsuario)HttpContext.Current.Session["UserData"];
+
+                EEmpleado eEmpleado = new EEmpleado();
+                eEmpleado.ID_EMPLEADO = idEmpleado;
+                eEmpleado.OPCION = 5;
+                NUsuario.ActualizarUsuarios(eEmpleado);
+
+                objRespuesta.Success("Se reseteo clave satisfactoriamente del usuario");
+            }
+            catch (Exception ex)
+            {
+                objRespuesta.Error(string.IsNullOrEmpty(ex.Message) ? ex.InnerException.Message : ex.Message);
+            }
+
+            return objRespuesta;
+        }
+
         [WebMethod()]
         public static object ObtenerEmpleadoWM(int idEmpleado)
         {

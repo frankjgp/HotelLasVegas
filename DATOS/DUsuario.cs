@@ -142,6 +142,7 @@ namespace DATOS
                         eUsuario = new EUsuario();
                         eUsuario.ID_USUARIO = dr.IsDBNull(dr.GetOrdinal("ID_USUARIO")) ? 0 : dr.GetInt32(dr.GetOrdinal("ID_USUARIO"));
                         eUsuario.DSC_USUARIO = dr.IsDBNull(dr.GetOrdinal("DSC_USUARIO")) ? string.Empty : dr.GetString(dr.GetOrdinal("DSC_USUARIO"));
+                        eUsuario.ESTADO = dr.IsDBNull(dr.GetOrdinal("ESTADO")) ? 0 : dr.GetInt32(dr.GetOrdinal("ESTADO"));
 
                         eUsuario.EMPLEADO = new EEmpleado();
                         eUsuario.EMPLEADO.ID_EMPLEADO = dr.IsDBNull(dr.GetOrdinal("ID_EMPLEADO")) ? 0 : dr.GetInt32(dr.GetOrdinal("ID_EMPLEADO"));
@@ -152,6 +153,23 @@ namespace DATOS
                 }
             }
             return eUsuario;
+        }
+
+        public static int CambiarClave(EUsuario ent)
+        {
+            int respFinal = 0;
+
+            using (SqlConnection cn = new SqlConnection(DConexion.Get_Connection(DConexion.DataBase.CnLasVegas)))
+            {
+                SqlCommand cmd = new SqlCommand("USP_CAMBIAR_CLAVE", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@ID_USUARIO", SqlDbType.VarChar).Value = ent.ID_USUARIO;
+                cmd.Parameters.Add("@PASSWORD", SqlDbType.VarChar).Value = EUtil.getMd5Hash(ent.PASSWORD);
+
+                cn.Open();
+                respFinal = cmd.ExecuteNonQuery();
+            }
+            return respFinal;
         }
 
         public static List<ELocal> PermisoLocal(int id_usuario)
